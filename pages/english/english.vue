@@ -1,41 +1,222 @@
 <template>
-	<view>
-		英语播放列表页
+	<view class="sheet-page">
+		<view class="sheet-type-list" >
+			<scroll-view class="scroll" scroll-x="true" >
+				<view class="scroll-container">
+					<view @click="handleTypeChange(item.id)":id="item.id"  class="type-item" :class="{active: currentType === item.id}" v-for="(item, index) in typeArray" :key="item.id">
+						{{item.title}}
+					</view>
+				</view>
+			</scroll-view>
+		</view>
+		
+		<scroll-view class="sheet-scroll-wrap" scroll-y="true">
+			<view>
+				<view class="sheet-play-wrap">
+					<text class="icon"></text>
+					<text class="tit">
+						<text>播放全部</text>
+						<text class="count">（{{currentSheetData.trackCount || 0}}）</text>
+					</text>
+					
+				</view>
+				<view class="sheet-detail-list" v-if="currentSheetData">
+					<view v-for="(item,index) in currentSheetData.tracks" :key="index" class="song-item">
+						<view class="rank-wrap">
+							<text>{{index+1}}</text>
+						</view>
+						<view class="song-info">
+							<view class="song-name no-wrap">{{item.name}}</view>
+							<view class="song-desc no-wrap">{{item.ar[0] ? item.ar[0].name : '英语听力'}}-{{item.al.name || '听力天天练'}}</view>
+						</view>
+					</view>
+				</view>
+				<view v-else>
+					
+				</view>
+			</view>
+			
+		</scroll-view>
+		
+		
 	</view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				type: ''
+import {mapGetters, mapActions} from 'vuex'
+const IMAGE_HEIGHT = 260
+export default {
+	data() {
+		return {
+			typeArray: [
+				{id: 'cet4', title: '四级'},
+				{id: 'type2', title: '六级'},
+				{id: 'type3', title: '雅思'},
+				{id: 'type4', title: '托福'},
+				{id: 'type5', title: '八级'},
+			],
+			currentType: '',
+			scrollTop:0,
+			imageHeight: IMAGE_HEIGHT
+		};
+	},
+	onLoad(options) {
+		console.log('onload');
+		const type = options.type || 'cet4';
+		this.currentType = type
+		this.getSheetData({type})
+	},
+	created() {
+		console.log('created');
+	},
+	mounted() {
+	},
+	
+	computed:{
+		...mapGetters(['statusBarHeight', 'navBarHeight', 'sheetData']),
+		currentSheetData() {
+			if (this.currentType && this.sheetData.length) {
+				const {sheetData, currentType} = this;
+				const data = sheetData.find(item => item.type === currentType);
+				console.log('currentSheetData', data)
+				if (data?.name) {
+					wx.setNavigationBarTitle({
+						title: data.name || '',
+					})
+				}
+				return data || null;
 			}
+			return null
 		},
-		onLoad(options) {
-			console.log('onload')
-			this.type = options.type || ''
-			
+	},
+	methods: {
+		handleBack() {
+			wx.navigateBack()
 		},
-		created() {
-			console.log('created')
+		handleTypeChange(type) {
+			this.currentType = type
 		},
-		mounted() {
-			this.getSheetList()
-			console.log('mounted')
+		handleScroll(event) {
+			const {scrollTop} = event.detail
+			this.scrollTop = -scrollTop
 		},
-		methods: {
-			getSheetList() {
-				wx.showLoading('加载中...')
-				wx.cloud.callFunction({
-					name: 'getSheet',
-				}).then((res) => {
-					console.log('res ==>>', res)
-				})
-			}
+		...mapActions(['getSheetData'])
+	},
+	watch:{
+		currentSheetData: {
+			handler: function(newVal) {
+				if (!newVal) {
+					wx.showLoading({
+						title:'加载中....'
+					})
+				} else {
+					wx.hideLoading()
+				}
+			},
+			immediate:true  
 		}
 	}
+};
 </script>
 
-<style>
+<style scoped>
+.sheet-page {
+	background-color: #f7fbf7;
+	min-height: 100vh;
+}
+.sheet-page
+.sheet-type-list {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	background-color: #fff;
+	box-shadow: 0 0 4rpx 1rpx rgb(0 0 0 / 20%);
+}
+.scroll {
+	width: 100%;
+}
+.scroll-container {
+	display: flex;
+	height: 100rpx;
+}
+.type-item {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	min-width: 100rpx;
+}
+.type-item::after {
+	display: block;
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 0;
+	margin: auto;
+	height: 2rpx ;
+	background-color: #6B8CF1;
+	transition: width 0.5s ease-in-out;
+}
+.type-item.active {
+	color: #6b8cf1;
+}
+.type-item.active::after {
+	width: 100%;
+}
+.sheet-scroll-wrap {
+	position: fixed;
+	top: 100rpx;
+	width: 100%;
+	bottom: 0;
+}
+.sheet-play-wrap {
+	display: flex;
+	align-items: center;
+	margin: 44rpx 20rpx 50rpx;
+}
+.sheet-play-wrap .icon {
+	width: 36rpx;
+	height: 36rpx;
+	background-color: #fa3e3a;
+	margin-right: 20rpx;
+	border-radius: 50%;
+}
+.sheet-play-wrap .tit{
+	font-size: 30rpx;
+	font-weight: bold;
+	color: #2d2d2d;
+}
+.sheet-play-wrap .count {
+	font-size: 20rpx;
+	color: #898989;
+	margin-left: 14rpx;
+}
 
+/* 歌曲列表 */
+.sheet-detail-list {
+	padding: 0 20rpx;
+}
+.song-item {
+	display: flex;
+	align-items: center;
+	margin: 22rpx 0;
+}
+.rank-wrap {
+	min-width: 36rpx;
+	margin-right: 20rpx;
+	text-align: center;
+	color: #898989;
+}
+.song-name {
+	font-size: 28rpx;
+	color: #2D2D2D;
+	margin-bottom: 12rpx;
+}
+.song-desc {
+	font-size: 20rpx;
+	color: #898989;
+}
 </style>

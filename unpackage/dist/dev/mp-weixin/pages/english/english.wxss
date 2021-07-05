@@ -1,1 +1,117 @@
-/* pages/english/english.wxss */
+
+.sheet-page.data-v-45fcd9e8 {
+	background-color: #f7fbf7;
+	min-height: 100vh;
+}
+.sheet-page
+.sheet-type-list.data-v-45fcd9e8 {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	background-color: #fff;
+	box-shadow: 0 0 4rpx 1rpx rgb(0 0 0 / 20%);
+}
+.scroll.data-v-45fcd9e8 {
+	width: 100%;
+}
+.scroll-container.data-v-45fcd9e8 {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	height: 100rpx;
+}
+.type-item.data-v-45fcd9e8 {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	position: relative;
+	min-width: 100rpx;
+}
+.type-item.data-v-45fcd9e8::after {
+	display: block;
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 0;
+	margin: auto;
+	height: 2rpx ;
+	background-color: #6B8CF1;
+	-webkit-transition: width 0.5s ease-in-out;
+	transition: width 0.5s ease-in-out;
+}
+.type-item.active.data-v-45fcd9e8 {
+	color: #6b8cf1;
+}
+.type-item.active.data-v-45fcd9e8::after {
+	width: 100%;
+}
+.sheet-scroll-wrap.data-v-45fcd9e8 {
+	position: fixed;
+	top: 100rpx;
+	width: 100%;
+	bottom: 0;
+}
+.sheet-play-wrap.data-v-45fcd9e8 {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	margin: 44rpx 20rpx 50rpx;
+}
+.sheet-play-wrap .icon.data-v-45fcd9e8 {
+	width: 36rpx;
+	height: 36rpx;
+	background-color: #fa3e3a;
+	margin-right: 20rpx;
+	border-radius: 50%;
+}
+.sheet-play-wrap .tit.data-v-45fcd9e8{
+	font-size: 30rpx;
+	font-weight: bold;
+	color: #2d2d2d;
+}
+.sheet-play-wrap .count.data-v-45fcd9e8 {
+	font-size: 20rpx;
+	color: #898989;
+	margin-left: 14rpx;
+}
+/* 歌曲列表 */
+.sheet-detail-list.data-v-45fcd9e8 {
+	padding: 0 20rpx;
+}
+.song-item.data-v-45fcd9e8 {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	margin: 22rpx 0;
+}
+.rank-wrap.data-v-45fcd9e8 {
+	min-width: 36rpx;
+	margin-right: 20rpx;
+	text-align: center;
+	color: #898989;
+}
+.song-name.data-v-45fcd9e8 {
+	font-size: 28rpx;
+	color: #2D2D2D;
+	margin-bottom: 12rpx;
+}
+.song-desc.data-v-45fcd9e8 {
+	font-size: 20rpx;
+	color: #898989;
+}
+

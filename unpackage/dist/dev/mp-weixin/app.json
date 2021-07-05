@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/index/index",
     "pages/english/english",
+    "pages/index/index",
     "pages/player/player",
     "pages/maogai/maogai",
     "pages/sixiu/sixiu"
@@ -13,5 +13,6 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap53.json"
 }
