@@ -11,6 +11,9 @@ const state = {
 	// 播放列表
 	playList: [],
 	
+	//  随机播放，顺序播放，小窗显示列表
+	sequenceList: [],
+	
 	// 当前播放歌曲的索引
 	currentIndex: -1,
 	

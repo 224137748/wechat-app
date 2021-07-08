@@ -13,21 +13,21 @@
 		<scroll-view class="sheet-scroll-wrap" scroll-y="true">
 			<view>
 				<view class="sheet-play-wrap">
-					<text class="icon"></text>
+					<text class="icon" @click="handleAddPlayList"></text>
 					<text class="tit">
 						<text>播放全部</text>
-						<text class="count">（{{currentSheetData.trackCount || 0}}）</text>
+						<text class="count">（{{currentSheetData.length || 0}}）</text>
 					</text>
 					
 				</view>
 				<view class="sheet-detail-list" v-if="currentSheetData">
-					<view v-for="(item,index) in currentSheetData.tracks" :key="index" class="song-item">
+					<view v-for="(item,index) in currentSheetData" :key="item.id" class="song-item" @click="selectSong(item)">
 						<view class="rank-wrap">
 							<text>{{index+1}}</text>
 						</view>
 						<view class="song-info">
 							<view class="song-name no-wrap">{{item.name}}</view>
-							<view class="song-desc no-wrap">{{item.ar[0] ? item.ar[0].name : '英语听力'}}-{{item.al.name || '听力天天练'}}</view>
+							<view class="song-desc no-wrap">{{item.singer || '英语听力'}}-{{item.album || '听力天天练'}}</view>
 						</view>
 					</view>
 				</view>
@@ -79,11 +79,6 @@ export default {
 				const {sheetData, currentType} = this;
 				const data = sheetData.find(item => item.type === currentType);
 				console.log('currentSheetData', data)
-				if (data?.name) {
-					wx.setNavigationBarTitle({
-						title: data.name || '',
-					})
-				}
 				return data || null;
 			}
 			return null
@@ -100,7 +95,20 @@ export default {
 			const {scrollTop} = event.detail
 			this.scrollTop = -scrollTop
 		},
-		...mapActions(['getSheetData'])
+		
+		selectSong(song) {
+			// console.log(song)
+			this.insertSong(song)
+			wx.navigateTo({
+				url: '../player/player'
+			})
+		},
+		
+		// 添加到播放列表
+		handleAddPlayList() {
+			
+		},
+		...mapActions(['getSheetData', 'insertSong'])
 	},
 	watch:{
 		currentSheetData: {

@@ -13,6 +13,9 @@ const mututations = {
 	[types.SET_PALYLIST](state, list) {
 		state.playList = list
 	},
+	[types.SET_CURRENT_INDEX](state, index) {
+		state.currentIndex = index
+	},
 	[types.SET_FAVORITE_LIST](state, list) {
 		state.favoriteList = list
 	}

@@ -1,6 +1,6 @@
-(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],[
-/* 0 */,
-/* 1 */
+(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],{
+
+/***/ 1:
 /*!************************************************************!*\
   !*** ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js ***!
   \************************************************************/
@@ -1920,7 +1920,565 @@ var uni$1 = uni;var _default =
 uni$1;exports.default = _default;
 
 /***/ }),
-/* 2 */
+
+/***/ 11:
+/*!**********************************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode, /* vue-cli only */
+  components, // fixed by xxxxxx auto components
+  renderjs // fixed by xxxxxx renderjs
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // fixed by xxxxxx auto components
+  if (components) {
+    if (!options.components) {
+      options.components = {}
+    }
+    var hasOwn = Object.prototype.hasOwnProperty
+    for (var name in components) {
+      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
+        options.components[name] = components[name]
+      }
+    }
+  }
+  // fixed by xxxxxx renderjs
+  if (renderjs) {
+    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
+      this[renderjs.__module] = this
+    });
+    (options.mixins || (options.mixins = [])).push(renderjs)
+  }
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+
+/***/ 12:
+/*!******************************************!*\
+  !*** C:/study/wechat-app/store/index.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 8));
+var actions = _interopRequireWildcard(__webpack_require__(/*! ./actions.js */ 13));
+var getters = _interopRequireWildcard(__webpack_require__(/*! ./getters.js */ 15));
+var _state = _interopRequireDefault(__webpack_require__(/*! ./state.js */ 16));
+var _mutations = _interopRequireDefault(__webpack_require__(/*! ./mutations.js */ 17));
+var _logger = _interopRequireDefault(__webpack_require__(/*! vuex/dist/logger */ 18));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+_vue.default.use(_vuex.default);
+
+var debug = "development" !== 'production';var _default =
+new _vuex.default.Store({
+  actions: actions,
+  getters: getters,
+  state: _state.default,
+  mutations: _mutations.default,
+  strict: debug,
+  plugins: debug ? [(0, _logger.default)()] : [] });exports.default = _default;
+
+/***/ }),
+
+/***/ 13:
+/*!********************************************!*\
+  !*** C:/study/wechat-app/store/actions.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.insertSong = exports.selectPlay = exports.getSheetData = exports.getStatusBarHeight = void 0;var types = _interopRequireWildcard(__webpack_require__(/*! ./mutation-types.js */ 14));
+var _song = __webpack_require__(/*! ../utils/song.js */ 56);function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}
+
+function findIndex(list, song) {
+  return list.findIndex(function (item) {
+    // 由于qq和网易云音频资源不一样，没有用id作为歌曲的标识
+    // return item.id === song.id
+    return item.name === song.name;
+  });
+}
+
+var getStatusBarHeight = function getStatusBarHeight(_ref) {var commit = _ref.commit;
+  wx.getSystemInfo({
+    success: function success(res) {var
+      statusBarHeight = res.statusBarHeight;
+      commit(types.SET_STATUS_BAR_HEIGHT, statusBarHeight);
+    } });
+
+};
+
+// 获取歌单详情
+exports.getStatusBarHeight = getStatusBarHeight;var getSheetData = function getSheetData(_ref2, _ref3) {var commit = _ref2.commit,state = _ref2.state;var type = _ref3.type;var
+  sheetData = state.sheetData;
+  // 如果有缓存，这不发送请求
+  if (sheetData.length && sheetData.find(function (item) {return item.type === type;})) return;
+
+  wx.showLoading({
+    title: '加载中...' });
+
+
+  wx.cloud.
+  callFunction({
+    name: 'getSheet' }).
+
+  then(function (res) {
+    var data = res.result.data.playlist.tracks;
+    data = data.filter(function (item) {return !!item.id;}).map(function (item) {return (0, _song.createSong)(item);});
+    // console.log('data', data);
+    data.type = type;
+    commit(types.SET_SHEET_DATA, [].concat(_toConsumableArray(sheetData), [data]));
+  }).
+  finally(function () {
+    wx.hideLoading();
+  });
+};exports.getSheetData = getSheetData;
+
+var selectPlay = function selectPlay(_ref4, _ref5) {var commit = _ref4.commit,state = _ref4.state;var list = _ref5.list,index = _ref5.index;
+  commit(types.SET_SEQUENCE_LIST, list);
+  if (state.mode === playMode.random) {
+    var randomList = shuffle(list);
+    commit(types.SET_PALYLIST, randomList);
+    index = findIndex(randomList, list[index]);
+  } else {
+    commit(types.SET_PALYLIST, list);
+  }
+  commit(types.SET_CURRENT_INDEX, index);
+  commit(types.SET_FULL_SCREEN, true);
+  commit(types.SET_PLAYING_STATE, true);
+};
+
+
+// 插入歌曲
+exports.selectPlay = selectPlay;var insertSong = function insertSong(_ref6, song) {var commit = _ref6.commit,state = _ref6.state;
+  var playList = state.playList.slice();
+  // let sequenceList = state.sequenceList.slice()
+  var currentIndex;
+
+  // 当前播放列表中没有歌曲
+  if (!playList.length) {
+    playList.push(song);
+    currentIndex = 0;
+  } else {
+    currentIndex = state.currentIndex;
+    // 记录当前歌曲
+    var currentSong = playList[currentIndex];
+    // 查找当前列表中是否有待插入的歌曲，并返回其索引
+    var fpIndex = findIndex(playList, song);
+    // 因为是插入歌曲，所以索引+1
+    currentIndex++;
+    // 插入这首歌到当前索引位置
+    playList.splice(currentIndex, 0, song);
+    // 如果已经包含了这首歌
+    if (fpIndex > -1) {
+      // 如果当前插入的序号，大于列表中的序号
+      if (currentIndex > fpIndex) {
+        playList.splice(fpIndex, 1);
+        currentIndex--;
+      } else {
+        playList.splice(fpIndex + 1, 1);
+      }
+    }
+  }
+
+
+  commit(types.SET_PALYLIST, playList);
+  // commit(types.SET_SEQUENCE_LIST, sequenceList)
+  commit(types.SET_CURRENT_INDEX, currentIndex);
+  // commit(types.SET_FULL_SCREEN, true)
+  commit(types.SET_PLAYING_STATE, true);
+};exports.insertSong = insertSong;
+
+/***/ }),
+
+/***/ 14:
+/*!***************************************************!*\
+  !*** C:/study/wechat-app/store/mutation-types.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.SET_FAVORITE_LIST = exports.SET_CURRENT_INDEX = exports.SET_PALYLIST = exports.SET_PLAYING_STATE = exports.SET_SHEET_DATA = exports.SET_STATUS_BAR_HEIGHT = void 0;var SET_STATUS_BAR_HEIGHT = 'SET_STATUS_BAR_HEIGHT';exports.SET_STATUS_BAR_HEIGHT = SET_STATUS_BAR_HEIGHT;
+
+var SET_SHEET_DATA = 'SET_SHEET_DATA';exports.SET_SHEET_DATA = SET_SHEET_DATA;
+
+var SET_PLAYING_STATE = 'SET_PLAYING_STATE';exports.SET_PLAYING_STATE = SET_PLAYING_STATE;
+
+var SET_PALYLIST = 'SET_PALYLIST';exports.SET_PALYLIST = SET_PALYLIST;
+
+var SET_CURRENT_INDEX = 'SET_CURRENT_INDEX';exports.SET_CURRENT_INDEX = SET_CURRENT_INDEX;
+
+var SET_FAVORITE_LIST = 'SET_FAVORITE_LIST';exports.SET_FAVORITE_LIST = SET_FAVORITE_LIST;
+
+/***/ }),
+
+/***/ 15:
+/*!********************************************!*\
+  !*** C:/study/wechat-app/store/getters.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.currentSong = exports.currentIndex = exports.favoriteList = exports.sequenceList = exports.playList = exports.playing = exports.sheetData = exports.navBarHeight = exports.statusBarHeight = void 0;var statusBarHeight = function statusBarHeight(state) {return state.statusBarHeight;};exports.statusBarHeight = statusBarHeight;
+
+var navBarHeight = function navBarHeight(state) {return state.statusBarHeight + 46;};exports.navBarHeight = navBarHeight;
+
+var sheetData = function sheetData(state) {return state.sheetData;};exports.sheetData = sheetData;
+
+var playing = function playing(state) {return state.playing;};exports.playing = playing;
+
+var playList = function playList(state) {return state.playList;};exports.playList = playList;
+
+var sequenceList = function sequenceList(state) {return state.sequenceList;};exports.sequenceList = sequenceList;
+
+var favoriteList = function favoriteList(state) {return state.favoriteList;};exports.favoriteList = favoriteList;
+
+var currentIndex = function currentIndex(state) {return state.currentIndex;};exports.currentIndex = currentIndex;
+
+var currentSong = function currentSong(state) {
+  return state.playList[state.currentIndex] || {};
+};exports.currentSong = currentSong;
+
+/***/ }),
+
+/***/ 16:
+/*!******************************************!*\
+  !*** C:/study/wechat-app/store/state.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var state = {
+  // 顶部statusBarHeight
+  statusBarHeight: 0,
+
+  // 歌单详情,缓存每一个歌单的信息
+  sheetData: [],
+
+  // 播放状态
+  playing: false,
+
+  // 播放列表
+  playList: [],
+
+  //  随机播放，顺序播放，小窗显示列表
+  sequenceList: [],
+
+  // 当前播放歌曲的索引
+  currentIndex: -1,
+
+  // 收藏列表
+  favoriteList: [] };var _default =
+
+
+state;exports.default = _default;
+
+/***/ }),
+
+/***/ 17:
+/*!**********************************************!*\
+  !*** C:/study/wechat-app/store/mutations.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var types = _interopRequireWildcard(__webpack_require__(/*! ./mutation-types.js */ 14));var _mututations;function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+
+var mututations = (_mututations = {}, _defineProperty(_mututations,
+types.SET_STATUS_BAR_HEIGHT, function (state, height) {
+  state.statusBarHeight = height;
+}), _defineProperty(_mututations,
+types.SET_SHEET_DATA, function (state, sheetData) {
+  state.sheetData = sheetData;
+}), _defineProperty(_mututations,
+types.SET_PLAYING_STATE, function (state, falg) {
+  state.playing = falg;
+}), _defineProperty(_mututations,
+types.SET_PALYLIST, function (state, list) {
+  state.playList = list;
+}), _defineProperty(_mututations,
+types.SET_CURRENT_INDEX, function (state, index) {
+  state.currentIndex = index;
+}), _defineProperty(_mututations,
+types.SET_FAVORITE_LIST, function (state, list) {
+  state.favoriteList = list;
+}), _mututations);var _default =
+
+
+
+mututations;exports.default = _default;
+
+/***/ }),
+
+/***/ 18:
+/*!******************************************!*\
+  !*** ./node_modules/vuex/dist/logger.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*!
+ * vuex v3.4.0
+ * (c) 2020 Evan You
+ * @license MIT
+ */
+(function (global, factory) {
+   true ? module.exports = factory() :
+  undefined;
+}(this, (function () { 'use strict';
+
+  /**
+   * Get the first item that pass the test
+   * by second argument function
+   *
+   * @param {Array} list
+   * @param {Function} f
+   * @return {*}
+   */
+  function find (list, f) {
+    return list.filter(f)[0]
+  }
+
+  /**
+   * Deep copy the given object considering circular structure.
+   * This function caches all nested objects and its copies.
+   * If it detects circular structure, use cached copy to avoid infinite loop.
+   *
+   * @param {*} obj
+   * @param {Array<Object>} cache
+   * @return {*}
+   */
+  function deepCopy (obj, cache) {
+    if ( cache === void 0 ) cache = [];
+
+    // just return if obj is immutable value
+    if (obj === null || typeof obj !== 'object') {
+      return obj
+    }
+
+    // if obj is hit, it is in circular structure
+    var hit = find(cache, function (c) { return c.original === obj; });
+    if (hit) {
+      return hit.copy
+    }
+
+    var copy = Array.isArray(obj) ? [] : {};
+    // put the copy into cache at first
+    // because we want to refer it in recursive deepCopy
+    cache.push({
+      original: obj,
+      copy: copy
+    });
+
+    Object.keys(obj).forEach(function (key) {
+      copy[key] = deepCopy(obj[key], cache);
+    });
+
+    return copy
+  }
+
+  // Credits: borrowed code from fcomb/redux-logger
+
+  function createLogger (ref) {
+    if ( ref === void 0 ) ref = {};
+    var collapsed = ref.collapsed; if ( collapsed === void 0 ) collapsed = true;
+    var filter = ref.filter; if ( filter === void 0 ) filter = function (mutation, stateBefore, stateAfter) { return true; };
+    var transformer = ref.transformer; if ( transformer === void 0 ) transformer = function (state) { return state; };
+    var mutationTransformer = ref.mutationTransformer; if ( mutationTransformer === void 0 ) mutationTransformer = function (mut) { return mut; };
+    var actionFilter = ref.actionFilter; if ( actionFilter === void 0 ) actionFilter = function (action, state) { return true; };
+    var actionTransformer = ref.actionTransformer; if ( actionTransformer === void 0 ) actionTransformer = function (act) { return act; };
+    var logMutations = ref.logMutations; if ( logMutations === void 0 ) logMutations = true;
+    var logActions = ref.logActions; if ( logActions === void 0 ) logActions = true;
+    var logger = ref.logger; if ( logger === void 0 ) logger = console;
+
+    return function (store) {
+      var prevState = deepCopy(store.state);
+
+      if (typeof logger === 'undefined') {
+        return
+      }
+
+      if (logMutations) {
+        store.subscribe(function (mutation, state) {
+          var nextState = deepCopy(state);
+
+          if (filter(mutation, prevState, nextState)) {
+            var formattedTime = getFormattedTime();
+            var formattedMutation = mutationTransformer(mutation);
+            var message = "mutation " + (mutation.type) + formattedTime;
+
+            startMessage(logger, message, collapsed);
+            logger.log('%c prev state', 'color: #9E9E9E; font-weight: bold', transformer(prevState));
+            logger.log('%c mutation', 'color: #03A9F4; font-weight: bold', formattedMutation);
+            logger.log('%c next state', 'color: #4CAF50; font-weight: bold', transformer(nextState));
+            endMessage(logger);
+          }
+
+          prevState = nextState;
+        });
+      }
+
+      if (logActions) {
+        store.subscribeAction(function (action, state) {
+          if (actionFilter(action, state)) {
+            var formattedTime = getFormattedTime();
+            var formattedAction = actionTransformer(action);
+            var message = "action " + (action.type) + formattedTime;
+
+            startMessage(logger, message, collapsed);
+            logger.log('%c action', 'color: #03A9F4; font-weight: bold', formattedAction);
+            endMessage(logger);
+          }
+        });
+      }
+    }
+  }
+
+  function startMessage (logger, message, collapsed) {
+    var startMessage = collapsed
+      ? logger.groupCollapsed
+      : logger.group;
+
+    // render
+    try {
+      startMessage.call(logger, message);
+    } catch (e) {
+      logger.log(message);
+    }
+  }
+
+  function endMessage (logger) {
+    try {
+      logger.groupEnd();
+    } catch (e) {
+      logger.log('—— log end ——');
+    }
+  }
+
+  function getFormattedTime () {
+    var time = new Date();
+    return (" @ " + (pad(time.getHours(), 2)) + ":" + (pad(time.getMinutes(), 2)) + ":" + (pad(time.getSeconds(), 2)) + "." + (pad(time.getMilliseconds(), 3)))
+  }
+
+  function repeat (str, times) {
+    return (new Array(times + 1)).join(str)
+  }
+
+  function pad (num, maxLength) {
+    return repeat('0', maxLength - num.toString().length) + num
+  }
+
+  return createLogger;
+
+})));
+
+
+/***/ }),
+
+/***/ 2:
 /*!******************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js ***!
   \******************************************************************************************/
@@ -7967,7 +8525,8 @@ internalMixin(Vue);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
-/* 3 */
+
+/***/ 3:
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
   \***********************************/
@@ -7997,7 +8556,8 @@ module.exports = g;
 
 
 /***/ }),
-/* 4 */
+
+/***/ 4:
 /*!**************************************!*\
   !*** C:/study/wechat-app/pages.json ***!
   \**************************************/
@@ -8007,10 +8567,62 @@ module.exports = g;
 
 
 /***/ }),
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */
+
+/***/ 56:
+/*!*****************************************!*\
+  !*** C:/study/wechat-app/utils/song.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.createSong = createSong;exports.default = void 0;function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var Song = /*#__PURE__*/function () {
+  function Song(_ref) {var id = _ref.id,mid = _ref.mid,singer = _ref.singer,name = _ref.name,album = _ref.album,duration = _ref.duration,image = _ref.image,url = _ref.url;_classCallCheck(this, Song);
+    this.id = id;
+    this.mid = mid;
+    this.singer = singer;
+    this.name = name;
+    this.album = album;
+    this.duration = duration;
+    this.image = image;
+    this.url = url;
+  }_createClass(Song, [{ key: "getLyric", value: function getLyric()
+    {
+      if (this.lyric) {
+        return Promise.resolve(this.lyric);
+      }
+      return new Promise(function (resolve, reject) {
+        console.log('获取歌词');
+        resolve('获取歌词中');
+        // getLyric(this.mid).then((res) => {
+        //   if (res.retcode === ERR_OK) {
+        //     this.lyric = Base64.decode(res.lyric)
+        //     resolve(this.lyric)
+        //   } else {
+        //     reject('no lyric')
+        //   }
+        // })
+      });
+    } }]);return Song;}();exports.default = Song;
+
+
+
+function createSong(musicData) {
+  return new Song({
+    id: musicData.id,
+    mid: musicData.ar[0].id || '', // 歌手id
+    singer: musicData.ar[0].name || '',
+    name: musicData.name,
+    album: musicData.al.name,
+    duration: parseInt(musicData.dt / 1000),
+    image: musicData.al.picUrl,
+    url: '' });
+
+}
+
+/***/ }),
+
+/***/ 8:
 /*!********************************************!*\
   !*** ./node_modules/vuex/dist/vuex.esm.js ***!
   \********************************************/
@@ -9121,476 +9733,7 @@ var index = {
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ 3)))
 
-/***/ }),
-/* 9 */,
-/* 10 */,
-/* 11 */
-/*!**********************************************************************************************************!*\
-  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
-  \**********************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode, /* vue-cli only */
-  components, // fixed by xxxxxx auto components
-  renderjs // fixed by xxxxxx renderjs
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // fixed by xxxxxx auto components
-  if (components) {
-    if (!options.components) {
-      options.components = {}
-    }
-    var hasOwn = Object.prototype.hasOwnProperty
-    for (var name in components) {
-      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
-        options.components[name] = components[name]
-      }
-    }
-  }
-  // fixed by xxxxxx renderjs
-  if (renderjs) {
-    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
-      this[renderjs.__module] = this
-    });
-    (options.mixins || (options.mixins = [])).push(renderjs)
-  }
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 12 */
-/*!******************************************!*\
-  !*** C:/study/wechat-app/store/index.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 8));
-var actions = _interopRequireWildcard(__webpack_require__(/*! ./actions.js */ 13));
-var getters = _interopRequireWildcard(__webpack_require__(/*! ./getters.js */ 15));
-var _state = _interopRequireDefault(__webpack_require__(/*! ./state.js */ 16));
-var _mutations = _interopRequireDefault(__webpack_require__(/*! ./mutations.js */ 17));
-var _logger = _interopRequireDefault(__webpack_require__(/*! vuex/dist/logger */ 18));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-_vue.default.use(_vuex.default);
-
-var debug = "development" !== 'production';var _default =
-new _vuex.default.Store({
-  actions: actions,
-  getters: getters,
-  state: _state.default,
-  mutations: _mutations.default,
-  strict: debug,
-  plugins: debug ? [(0, _logger.default)()] : [] });exports.default = _default;
-
-/***/ }),
-/* 13 */
-/*!********************************************!*\
-  !*** C:/study/wechat-app/store/actions.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getSheetData = exports.getStatusBarHeight = void 0;var types = _interopRequireWildcard(__webpack_require__(/*! ./mutation-types.js */ 14));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}
-
-var getStatusBarHeight = function getStatusBarHeight(_ref) {var commit = _ref.commit;
-  wx.getSystemInfo({
-    success: function success(res) {var
-      statusBarHeight = res.statusBarHeight;
-      commit(types.SET_STATUS_BAR_HEIGHT, statusBarHeight);
-    } });
-
-};
-
-// 获取歌单详情
-exports.getStatusBarHeight = getStatusBarHeight;var getSheetData = function getSheetData(_ref2, _ref3) {var commit = _ref2.commit,state = _ref2.state;var type = _ref3.type;var
-  sheetData = state.sheetData;
-  // 如果有缓存，这不发送请求
-  if (sheetData.length && sheetData.find(function (item) {return item.type === type;})) return;
-
-  wx.showLoading({
-    title: '加载中...' });
-
-
-  wx.cloud.
-  callFunction({
-    name: 'getSheet' }).
-
-  then(function (res) {
-    var data = res.result.data.playlist;
-    // console.log('data', data);
-    data.type = type;
-    commit(types.SET_SHEET_DATA, [].concat(_toConsumableArray(sheetData), [data]));
-  }).
-  finally(function () {
-    wx.hideLoading();
-  });
-};exports.getSheetData = getSheetData;
-
-/***/ }),
-/* 14 */
-/*!***************************************************!*\
-  !*** C:/study/wechat-app/store/mutation-types.js ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.SET_FAVORITE_LIST = exports.SET_PALYLIST = exports.SET_PLAYING_STATE = exports.SET_SHEET_DATA = exports.SET_STATUS_BAR_HEIGHT = void 0;var SET_STATUS_BAR_HEIGHT = 'SET_STATUS_BAR_HEIGHT';exports.SET_STATUS_BAR_HEIGHT = SET_STATUS_BAR_HEIGHT;
-
-var SET_SHEET_DATA = 'SET_SHEET_DATA';exports.SET_SHEET_DATA = SET_SHEET_DATA;
-
-var SET_PLAYING_STATE = 'SET_PLAYING_STATE';exports.SET_PLAYING_STATE = SET_PLAYING_STATE;
-
-var SET_PALYLIST = 'SET_PALYLIST';exports.SET_PALYLIST = SET_PALYLIST;
-
-var SET_FAVORITE_LIST = 'SET_FAVORITE_LIST';exports.SET_FAVORITE_LIST = SET_FAVORITE_LIST;
-
-/***/ }),
-/* 15 */
-/*!********************************************!*\
-  !*** C:/study/wechat-app/store/getters.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.favoriteList = exports.playList = exports.playing = exports.sheetData = exports.navBarHeight = exports.statusBarHeight = void 0;var statusBarHeight = function statusBarHeight(state) {return state.statusBarHeight;};exports.statusBarHeight = statusBarHeight;
-
-var navBarHeight = function navBarHeight(state) {return state.statusBarHeight + 46;};exports.navBarHeight = navBarHeight;
-
-var sheetData = function sheetData(state) {return state.sheetData;};exports.sheetData = sheetData;
-
-var playing = function playing(state) {return state.playing;};exports.playing = playing;
-
-var playList = function playList(state) {return state.playList;};exports.playList = playList;
-
-var favoriteList = function favoriteList(state) {return state.favoriteList;};exports.favoriteList = favoriteList;
-
-/***/ }),
-/* 16 */
-/*!******************************************!*\
-  !*** C:/study/wechat-app/store/state.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var state = {
-  // 顶部statusBarHeight
-  statusBarHeight: 0,
-
-  // 歌单详情,缓存每一个歌单的信息
-  sheetData: [],
-
-  // 播放状态
-  playing: false,
-
-  // 播放列表
-  playList: [],
-
-  // 当前播放歌曲的索引
-  currentIndex: -1,
-
-  // 收藏列表
-  favoriteList: [] };var _default =
-
-
-state;exports.default = _default;
-
-/***/ }),
-/* 17 */
-/*!**********************************************!*\
-  !*** C:/study/wechat-app/store/mutations.js ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var types = _interopRequireWildcard(__webpack_require__(/*! ./mutation-types.js */ 14));var _mututations;function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
-
-var mututations = (_mututations = {}, _defineProperty(_mututations,
-types.SET_STATUS_BAR_HEIGHT, function (state, height) {
-  state.statusBarHeight = height;
-}), _defineProperty(_mututations,
-types.SET_SHEET_DATA, function (state, sheetData) {
-  state.sheetData = sheetData;
-}), _defineProperty(_mututations,
-types.SET_PLAYING_STATE, function (state, falg) {
-  state.playing = falg;
-}), _defineProperty(_mututations,
-types.SET_PALYLIST, function (state, list) {
-  state.playList = list;
-}), _defineProperty(_mututations,
-types.SET_FAVORITE_LIST, function (state, list) {
-  state.favoriteList = list;
-}), _mututations);var _default =
-
-
-
-mututations;exports.default = _default;
-
-/***/ }),
-/* 18 */
-/*!******************************************!*\
-  !*** ./node_modules/vuex/dist/logger.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*!
- * vuex v3.4.0
- * (c) 2020 Evan You
- * @license MIT
- */
-(function (global, factory) {
-   true ? module.exports = factory() :
-  undefined;
-}(this, (function () { 'use strict';
-
-  /**
-   * Get the first item that pass the test
-   * by second argument function
-   *
-   * @param {Array} list
-   * @param {Function} f
-   * @return {*}
-   */
-  function find (list, f) {
-    return list.filter(f)[0]
-  }
-
-  /**
-   * Deep copy the given object considering circular structure.
-   * This function caches all nested objects and its copies.
-   * If it detects circular structure, use cached copy to avoid infinite loop.
-   *
-   * @param {*} obj
-   * @param {Array<Object>} cache
-   * @return {*}
-   */
-  function deepCopy (obj, cache) {
-    if ( cache === void 0 ) cache = [];
-
-    // just return if obj is immutable value
-    if (obj === null || typeof obj !== 'object') {
-      return obj
-    }
-
-    // if obj is hit, it is in circular structure
-    var hit = find(cache, function (c) { return c.original === obj; });
-    if (hit) {
-      return hit.copy
-    }
-
-    var copy = Array.isArray(obj) ? [] : {};
-    // put the copy into cache at first
-    // because we want to refer it in recursive deepCopy
-    cache.push({
-      original: obj,
-      copy: copy
-    });
-
-    Object.keys(obj).forEach(function (key) {
-      copy[key] = deepCopy(obj[key], cache);
-    });
-
-    return copy
-  }
-
-  // Credits: borrowed code from fcomb/redux-logger
-
-  function createLogger (ref) {
-    if ( ref === void 0 ) ref = {};
-    var collapsed = ref.collapsed; if ( collapsed === void 0 ) collapsed = true;
-    var filter = ref.filter; if ( filter === void 0 ) filter = function (mutation, stateBefore, stateAfter) { return true; };
-    var transformer = ref.transformer; if ( transformer === void 0 ) transformer = function (state) { return state; };
-    var mutationTransformer = ref.mutationTransformer; if ( mutationTransformer === void 0 ) mutationTransformer = function (mut) { return mut; };
-    var actionFilter = ref.actionFilter; if ( actionFilter === void 0 ) actionFilter = function (action, state) { return true; };
-    var actionTransformer = ref.actionTransformer; if ( actionTransformer === void 0 ) actionTransformer = function (act) { return act; };
-    var logMutations = ref.logMutations; if ( logMutations === void 0 ) logMutations = true;
-    var logActions = ref.logActions; if ( logActions === void 0 ) logActions = true;
-    var logger = ref.logger; if ( logger === void 0 ) logger = console;
-
-    return function (store) {
-      var prevState = deepCopy(store.state);
-
-      if (typeof logger === 'undefined') {
-        return
-      }
-
-      if (logMutations) {
-        store.subscribe(function (mutation, state) {
-          var nextState = deepCopy(state);
-
-          if (filter(mutation, prevState, nextState)) {
-            var formattedTime = getFormattedTime();
-            var formattedMutation = mutationTransformer(mutation);
-            var message = "mutation " + (mutation.type) + formattedTime;
-
-            startMessage(logger, message, collapsed);
-            logger.log('%c prev state', 'color: #9E9E9E; font-weight: bold', transformer(prevState));
-            logger.log('%c mutation', 'color: #03A9F4; font-weight: bold', formattedMutation);
-            logger.log('%c next state', 'color: #4CAF50; font-weight: bold', transformer(nextState));
-            endMessage(logger);
-          }
-
-          prevState = nextState;
-        });
-      }
-
-      if (logActions) {
-        store.subscribeAction(function (action, state) {
-          if (actionFilter(action, state)) {
-            var formattedTime = getFormattedTime();
-            var formattedAction = actionTransformer(action);
-            var message = "action " + (action.type) + formattedTime;
-
-            startMessage(logger, message, collapsed);
-            logger.log('%c action', 'color: #03A9F4; font-weight: bold', formattedAction);
-            endMessage(logger);
-          }
-        });
-      }
-    }
-  }
-
-  function startMessage (logger, message, collapsed) {
-    var startMessage = collapsed
-      ? logger.groupCollapsed
-      : logger.group;
-
-    // render
-    try {
-      startMessage.call(logger, message);
-    } catch (e) {
-      logger.log(message);
-    }
-  }
-
-  function endMessage (logger) {
-    try {
-      logger.groupEnd();
-    } catch (e) {
-      logger.log('—— log end ——');
-    }
-  }
-
-  function getFormattedTime () {
-    var time = new Date();
-    return (" @ " + (pad(time.getHours(), 2)) + ":" + (pad(time.getMinutes(), 2)) + ":" + (pad(time.getSeconds(), 2)) + "." + (pad(time.getMilliseconds(), 3)))
-  }
-
-  function repeat (str, times) {
-    return (new Array(times + 1)).join(str)
-  }
-
-  function pad (num, maxLength) {
-    return repeat('0', maxLength - num.toString().length) + num
-  }
-
-  return createLogger;
-
-})));
-
-
 /***/ })
-]]);
+
+}]);
 //# sourceMappingURL=../../.sourcemap/mp-weixin/common/vendor.js.map

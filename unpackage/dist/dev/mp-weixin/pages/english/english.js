@@ -211,11 +211,6 @@ var IMAGE_HEIGHT = 260;var _default =
         sheetData = this.sheetData,currentType = this.currentType;
         var data = sheetData.find(function (item) {return item.type === currentType;});
         console.log('currentSheetData', data);
-        if (data === null || data === void 0 ? void 0 : data.name) {
-          wx.setNavigationBarTitle({
-            title: data.name || '' });
-
-        }
         return data || null;
       }
       return null;
@@ -231,8 +226,21 @@ var IMAGE_HEIGHT = 260;var _default =
     handleScroll: function handleScroll(event) {var
       scrollTop = event.detail.scrollTop;
       this.scrollTop = -scrollTop;
+    },
+
+    selectSong: function selectSong(song) {
+      // console.log(song)
+      this.insertSong(song);
+      wx.navigateTo({
+        url: '../player/player' });
+
+    },
+
+    // 添加到播放列表
+    handleAddPlayList: function handleAddPlayList() {
+
     } },
-  (0, _vuex.mapActions)(['getSheetData'])),
+  (0, _vuex.mapActions)(['getSheetData', 'insertSong'])),
 
   watch: {
     currentSheetData: {
