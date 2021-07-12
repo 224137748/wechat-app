@@ -78,7 +78,7 @@ export default {
 			if (this.currentType && this.sheetData.length) {
 				const {sheetData, currentType} = this;
 				const data = sheetData.find(item => item.type === currentType);
-				console.log('currentSheetData', data)
+				// console.log('currentSheetData', data)
 				return data || null;
 			}
 			return null

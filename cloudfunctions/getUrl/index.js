@@ -15,19 +15,18 @@ cloud.init({
 
 // 云函数入口函数
 exports.main = async (event, context) => {
+	const {id} = event
 	try {
-		const res = await instance.get('/playlist/detail?id=72751590')
-		const songIds = res.data.playlist.trackIds.map(item => item.id).toString()
-		const songRes = await instance.get('/song/detail', { params : {ids: songIds}})
-		// console.log('songRes', songRes)
-		const songData = songRes.data.songs || []
+		const res = await instance.get('/song/url', {params: {
+			id
+		}})
 		return {
-			data: songData
+			data: res.data
 		}	
 	} catch(err) {
 		return {
-			err,
-			code: 500
+			code: 500,
+			err
 		}
 	}
 }

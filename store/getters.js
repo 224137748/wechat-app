@@ -14,6 +14,8 @@ export const favoriteList = state => state.favoriteList
 
 export const currentIndex = state => state.currentIndex
 
+export const audio = state => state.audio
+
 export const currentSong = (state) => {
   return state.playList[state.currentIndex] || {}
 }

@@ -17,12 +17,17 @@ cloud.init({
 exports.main = async (event, context) => {
 	try {
 		const res = await instance.get('/playlist/detail?id=72751590')
+		const songIds = res.data.playlist.trackIds.map(item => item.id).toString()
+		const songRes = await instance.get('/song/detail', { params : {ids: songIds}})
+		// console.log('songRes', songRes)
+		const songData = songRes.data.songs || []
 		return {
-			data: res.data
+			data: songData
 		}	
 	} catch(err) {
 		return {
-			err
+			err,
+			code: 500
 		}
 	}
 }

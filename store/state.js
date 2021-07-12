@@ -18,7 +18,10 @@ const state = {
 	currentIndex: -1,
 	
 	// 收藏列表
-	favoriteList: []
+	favoriteList: [],
+	
+	// 播放器
+	audio: wx.getBackgroundAudioManager()
 }
 
 export default state

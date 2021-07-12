@@ -18,6 +18,18 @@ const mututations = {
 	},
 	[types.SET_FAVORITE_LIST](state, list) {
 		state.favoriteList = list
+	},
+	[types.SET_SONG_URL](state, {id, url}) {
+		const song = state.playList.find(item => item.id === id)
+		if (song) {
+			song.url = url
+		}
+	},
+	[types.SET_SONG_LYRIC](state, {id, lyric}) {
+		const song = state.playList.find(item => item.id === id)
+		if (song) {
+			song.lyric = lyric
+		}
 	}
 }
 
