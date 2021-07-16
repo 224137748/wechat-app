@@ -64,8 +64,11 @@ export const getSheetData = function({
 			// 	console.log(response)
 			// })
 
-			let data = res.result.data;
-			// console.log('data', data);
+			// let data = res.result.data;
+			let data = res.result.data.playlist.tracks;
+			
+			console.log('data', data);
+			
 			data = data.filter(item => !!item.id).map(item => createSong(item))
 			// const saveSongs = data.slice(47,59)
 			// saveSongs.forEach(item => {

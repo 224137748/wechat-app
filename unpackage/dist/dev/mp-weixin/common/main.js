@@ -10,7 +10,7 @@
 /* WEBPACK VAR INJECTION */(function(createApp) {__webpack_require__(/*! uni-pages */ 4);var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ 5));
 var _index = _interopRequireDefault(__webpack_require__(/*! ./store/index.js */ 12));
-var _index2 = __webpack_require__(/*! config/index.js */ 63);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+var _index2 = __webpack_require__(/*! config/index.js */ 19);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 _vue.default.config.productionTip = false;
 
 _App.default.mpType = 'app';
@@ -106,7 +106,43 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function ownKeys(object, enumerab
   onHide: function onHide() {
     console.log('App Hide');
   },
-  methods: _objectSpread({},
+  computed: _objectSpread({},
+  (0, _vuex.mapGetters)(['audio'])),
+
+  mounted: function mounted() {var _this = this;
+    console.log('audio__mounted', this.audio);
+    this.audio.onPlay(function () {
+      _this.setPlayingState(true);
+    });
+    this.audio.onPause(function () {
+      _this.setPlayingState(false);
+    });
+    this.audio.onTimeUpdate(function () {
+      // props.setPlaying.call(this, { currentTime: audioDom.currentTime })
+      // console.log('current_time', this.audio.currentTime);
+    });
+    this.audio.onError(function (error) {
+      console.log('音频捕获到错误:', error);
+    });
+
+    this.audio.onEnded(function () {
+      console.log('player end');
+    });
+    this.audio.onStop(function () {
+      _this.setPlayingState(false);
+      console.log('player stop');
+    });
+    this.audio.onNext(function () {
+      console.log('player next');
+    });
+    this.audio.onPrev(function () {
+      console.log('player prev');
+    });
+  },
+  methods: _objectSpread(_objectSpread({},
+  (0, _vuex.mapMutations)({
+    setPlayingState: 'SET_PLAYING_STATE' })),
+
   (0, _vuex.mapActions)(['getStatusBarHeight'])) };exports.default = _default;
 
 /***/ }),

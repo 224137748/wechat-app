@@ -8,60 +8,67 @@
 			<view class="subtitle">{{ currentSong.singer }}</view>
 		</view>
 
-		<view class="middle">
-			<transition>
+		<view class="middle" id="middle">
 				<view class="middle-l" v-if="!showLyricFlag">
-					<view class="cd-wrapper">
-						<div class="cd"><img class="image" :src="currentSong.image" alt="" /></div>
+					<view class="cd-wrapper" @click="showLyricFlag = true">
+						<div class="cd" :class="playing ? 'play': 'pause'"><img class="image" :src="currentSong.image" alt="" /></div>
 					</view>
 					<view class="playing-lyric-wrapper">
-						<view class="playing-lyric">{{ playingLyric
-						 
-						 
-						 
-						 
-						        }}</view>
+						<view class="playing-lyric">{{ playingLyric }}</view>
 					</view>
+				
 				</view>
-				<view v-else class="middle-r">
-					<scroll-view scroll-y style="height: 100%" :scroll-top="scrollTop" @touchstart="handleDragStatus" @scroll="handleDrag">
-						<view class="lyric-wrapper">
-							<view v-if="currentLyric">
-								<view class="text" :class="{ current: currentLineNum === index }" v-for="(line, index) in currentLyric.lines" :key="index">
-									<view :style="{ visibility: currentLineNum === index ? 'hidden' : 'visible' }">{{ line.txt }}</view>
-									<view v-if="currentLineNum === index" class="text-item">{{ line.txt }}</view>
-									<view v-if="currentLineNum === index" :style="{ width: `${currentWidth}px`, transition: `all ease ${line.duration}ms` }" class="text-item">
-										{{ line.txt }}
-									</view>
-								</view>
+			<view class="middle-r" v-else>
+				<scroll-view 
+				:scroll-y="true" style="height: 100%" enhanced 
+				:show-scrollbar="false" 
+				:scroll-into-view="scrollIntoView"
+				:scroll-with-animation="true"
+				@scroll="handleScroll"
+				>
+					<view class="lyric-wrapper">
+						<view v-if="currentLyric">
+							<view class="text" :id="`lyric-${index}`" :class="{ current: currentLineNum === index }" v-for="(line, index) in currentLyric.lines" :key="index">
+									{{ line.txt }}
 							</view>
-							<view class="text" v-else>抱歉，暂未搜索到歌词~！</view>
 						</view>
-					</scroll-view>
-				</view>
+						<view class="text" v-else>抱歉，暂未搜索到歌词~！</view>
+					</view>
+				</scroll-view>
+			</view>
 			</transition>
 		</view>
 	</view>
 </template>
 
 <script>
-import Lyric from '../../utils/lyric.js'
+import Lyric from '../../utils/lyric.js';
 import { mapGetters } from 'vuex';
-import {CLOUD_ENV} from '../../config/index.js'
+import { CLOUD_ENV } from '../../config/index.js';
+
 export default {
 	data() {
 		return {
 			showLyricFlag: false,
 			currentLyric: null,
 			currentLineNum: 0,
-			playingLyric: ''
-			
+			playingLyric: '',
+			scrollIntoView: ''
 		};
 	},
 	computed: {
-		...mapGetters(['currentSong', 'playing', 'currentIndex', 'statusBarHeight', 'audio'])
+		...mapGetters(['currentSong', 'playing', 'currentIndex', 'statusBarHeight', 'audio', ''])
 	},
-	mounted() {},
+	mounted() {
+		// const query = wx.createSelectorQuery()
+		// query.select(`#middle`).boundingClientRect()
+		// query.selectViewport().scrollOffset()
+		// query.exec(function(res){
+		//   // res[0].top       // #the-id节点的上边界坐标
+		//   // res[1].scrollTop // 显示区域的竖直滚动位置
+		//   console.log(res)
+		// })
+	},
 	methods: {
 		handleBack() {
 			wx.navigateBack();
@@ -69,35 +76,60 @@ export default {
 		getLyric() {
 			this.currentSong.getLyric();
 		},
+		handleScroll() {
+			this.lyricScrolling = true
+			this.lyricTimer && clearTimeout(this.lyricTimer)
+			this.lyricTimer = setTimeout(() => {
+				this.lyricScrolling = false
+			}, 100)
+		},
 		// 处理歌词
 		handleLyric(lyric) {
-			console.log('lyric ==>', lyric)
-			let lineNum = lyric.lineNum
-			this.currentLineNum = lineNum
+			// console.log('lyric ==>', lyric);
+			let lineNum = lyric.lineNum;
+			this.currentLineNum = lineNum;
 			this.playingLyric = lyric.txt
-			if (lineNum > 5) {
-				
+			if (lineNum > 4 && this.showLyricFlag && !this.lyricScrolling) {
+				this.scrollIntoView = `lyric-${lineNum-4}`
 			}
-			
-		}
+		},
+		handleDragStatus() {},
+		handleDrag() {}
 	},
 	watch: {
 		currentSong: {
 			immediate: true,
 			async handler(newSong, oldSong) {
 				console.log('newSong', newSong);
-				console.log(this.audio)
-				if (!newSong?.id) return 
-				if (newSong?.id === oldSong?.id) return 
-				
+				console.log(this.audio);
+				if (!newSong?.id) return;
+				if (newSong?.id === oldSong?.id) return;
+
 				// 获取音频、歌词
-				const [playUrl, lyric] = await Promise.allSettled([newSong.getUrl(), newSong.getLyric()])
-				console.log('lyric ===>',playUrl, lyric)
+				const [playUrl, lyric] = await Promise.allSettled([newSong.getUrl(), newSong.getLyric()]);
+				console.log('lyric ===>', playUrl, lyric);
 				// 处理歌词
 				if (lyric.status === 'fulfilled') {
-					this.currentLyric = new Lyric(lyric.value.lrc, lyric.value.tlyric, this.handleLyric)
+					this.currentLyric = new Lyric(lyric.value.lrc, lyric.value.tlyric, this.handleLyric);
+					// console.log(this.currentLyric)
 				}
-				const {} = newSong
+				const { name, url, image, singer, duration } = newSong;
+				this.audio.title = name;
+				this.audio.singer = singer;
+				this.audio.coverImgUrl = image;
+				this.audio.duration = duration;
+				this.audio.src = url
+				this.audio.play()
+			}
+		},
+		// 监听播放器播放
+		playing(newVal) {
+			if (newVal) {
+				// 播放歌词
+				this.currentLyric.play()
+			} else {
+				// 暂停歌词
+				this.currentLyric.stop()
 			}
 		}
 	}
@@ -215,9 +247,48 @@ export default {
 	text-align: center;
 }
 .playing-lyric {
-	height: 40rpx;
 	line-height: 40rpx;
 	font-size: 28rpx;
 	color: rgba(255, 255, 255, 0.7);
+	white-space: pre-wrap;
+		word-wrap: break-word;
+		word-break: normal;
+}
+
+.middle-r {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+.middle-r view {
+	font-size: 28rpx;
+}
+.lyric-wrapper {
+	width: 80%;
+	margin: 0 auto;
+	overflow: hidden;
+	text-align: center;
+}
+.lyric-wrapper .text {
+	color: rgba(255, 255, 255, 0.5);
+	line-height: 64rpx;
+	font-size: 28rpx;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	word-break: normal;
+	transition: all 0.3s ease-in-out;
+}
+.lyric-wrapper .text.current {
+	color: #fff;
+	font-size: 32rpx;
+}
+
+@keyframes rotate {
+	0% {
+	  transform: rotate(0);
+	}
+	100% {
+	  transform: rotate(360deg);
+	}
 }
 </style>
