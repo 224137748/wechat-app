@@ -205,7 +205,7 @@ var IMAGE_HEIGHT = 260;var _default =
   },
 
   computed: _objectSpread(_objectSpread({},
-  (0, _vuex.mapGetters)(['statusBarHeight', 'navBarHeight', 'sheetData'])), {}, {
+  (0, _vuex.mapGetters)(['statusBarHeight', 'navBarHeight', 'sheetData', 'currentSong'])), {}, {
     currentSheetData: function currentSheetData() {
       if (this.currentType && this.sheetData.length) {var
         sheetData = this.sheetData,currentType = this.currentType;

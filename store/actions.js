@@ -106,8 +106,6 @@ export const selectPlay = function({commit,	state}, {	list,	index}) {
 		commit(types.SET_PALYLIST, list)
 	}
 	commit(types.SET_CURRENT_INDEX, index)
-	commit(types.SET_FULL_SCREEN, true)
-	commit(types.SET_PLAYING_STATE, true)
 }
 
 
@@ -117,9 +115,9 @@ export const insertSong = function({
 	state
 }, song) {
 	let playList = state.playList.slice()
-	// let sequenceList = state.sequenceList.slice()
-	let currentIndex
-
+	let sequenceList = state.sequenceList.slice()
+	let currentIndex 
+	
 	// 当前播放列表中没有歌曲
 	if (!playList.length) {
 		playList.push(song)
@@ -144,10 +142,80 @@ export const insertSong = function({
 				playList.splice(fpIndex + 1, 1)
 			}
 		}
+		
+		
+		let currentSIndex = findIndex(sequenceList, currentSong) + 1
+		let fsIndex = findIndex(sequenceList, song)
+		sequenceList.splice(currentSIndex, 0, song)
+		if (fsIndex > -1) {
+			if (currentSIndex > fsIndex) {
+			  sequenceList.splice(fsIndex, 1)
+			} else {
+			  sequenceList.splice(fsIndex + 1, 1)
+			}
+		}
 	}
 
-
 	commit(types.SET_PALYLIST, playList)
-	// commit(types.SET_SEQUENCE_LIST, sequenceList)
+	commit(types.SET_SEQUENCE_LIST, sequenceList)
 	commit(types.SET_CURRENT_INDEX, currentIndex)
+}
+
+
+// 重播 音频
+export const dispatchLoop = ({state, commit, getters}) => {
+	const { name, url, image, singer, duration } = getters.currentSong
+	state.audio.title = name;
+	state.audio.singer = singer;
+	state.audio.coverImgUrl = image;
+	state.audio.duration = duration;
+	state.audio.src = url;
+	state.audio.play()
+}
+
+// 播放、暂停
+export const dispatchTogglePlay = ({state, commit}) => {
+	if (state.playing) {
+		state.audio.pause()
+	} else {
+		state.audio.play()
+	}
+}
+
+// 下一曲
+export const dispatchNext = ({state, commit, dispatch}) => {
+	const {playList, currentIndex, playing} = state
+	commit(types.SET_CURRENT_TIME, 0)
+	if (playList.length === 1) {
+		dispatch('dispatchLoop')
+		return Promise.resolve('loop')
+	} else {
+		let index = currentIndex + 1;
+		if (index === playList.length) {
+			index = 0;
+		}
+		commit(types.SET_CURRENT_INDEX, index)
+		if (!playing) {
+			dispatch('dispatchTogglePlay')
+		}
+	}
+}
+
+// 上一曲
+export const dispatchPrev = ({state, commit, dispatch}) => {
+	const {playing, playList, currentIndex} = state
+	commit(types.SET_CURRENT_TIME, 0)
+	if (playList.length === 1) {
+		dispatch('dispatchLoop')
+		return Promise.resolve('loop')
+	} else {
+		let index = this.currentIndex - 1;
+		if (index === -1) {
+			index = this.playList.length - 1;
+		}
+		this.setCurrentIndex(index);
+		if (!this.playing) {
+			this.togglePlaying();
+		}
+	}
 }

@@ -21,7 +21,7 @@
 					
 				</view>
 				<view class="sheet-detail-list" v-if="currentSheetData">
-					<view v-for="(item,index) in currentSheetData" :key="item.id" class="song-item" @click="selectSong(item)">
+					<view :class="{active: currentSong.id === item.id}" v-for="(item,index) in currentSheetData" :key="item.id" class="song-item" @click="selectSong(item)">
 						<view class="rank-wrap">
 							<text>{{index+1}}</text>
 						</view>
@@ -73,7 +73,7 @@ export default {
 	},
 	
 	computed:{
-		...mapGetters(['statusBarHeight', 'navBarHeight', 'sheetData']),
+		...mapGetters(['statusBarHeight', 'navBarHeight', 'sheetData', 'currentSong']),
 		currentSheetData() {
 			if (this.currentType && this.sheetData.length) {
 				const {sheetData, currentType} = this;
@@ -214,6 +214,13 @@ export default {
 	display: flex;
 	align-items: center;
 	margin: 22rpx 0;
+}
+.song-item.active .rank-wrap,
+.song-item.active .song-desc{
+	color: #6b8cf194;
+}
+.song-item.active .song-name {
+	color: #6b8cf1;
 }
 .rank-wrap {
 	min-width: 36rpx;

@@ -2,7 +2,11 @@ export const statusBarHeight = state => state.statusBarHeight
 
 export const navBarHeight = state => (state.statusBarHeight + 46)
 
+export const isHide = state => state.isHide
+
 export const sheetData = state => state.sheetData
+
+export const songReady = state => state.songReady
 
 export const playing = state => state.playing
 

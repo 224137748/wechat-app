@@ -4,11 +4,17 @@ const mututations = {
 	[types.SET_STATUS_BAR_HEIGHT](state, height) {
 		state.statusBarHeight = height
 	},
+	[types.SET_IS_HIDE](state, flag) {
+		state.isHide = flag
+	},
 	[types.SET_SHEET_DATA](state, sheetData) {
 		state.sheetData = sheetData
 	},
-	[types.SET_PLAYING_STATE](state, falg) {
-		state.playing = falg
+	[types.SET_SONG_READY](state, flag) {
+		state.songReady = flag
+	},
+	[types.SET_PLAYING_STATE](state, flag) {
+		state.playing = flag
 	},
 	[types.SET_SEQUENCE_LIST](state, list) {
 		state.sequenceList = list

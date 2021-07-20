@@ -96,6 +96,13 @@
 	        align-items: center;
 	margin: 22rpx 0;
 }
+.song-item.active .rank-wrap.data-v-45fcd9e8,
+.song-item.active .song-desc.data-v-45fcd9e8{
+	color: #6b8cf194;
+}
+.song-item.active .song-name.data-v-45fcd9e8 {
+	color: #6b8cf1;
+}
 .rank-wrap.data-v-45fcd9e8 {
 	min-width: 36rpx;
 	margin-right: 20rpx;

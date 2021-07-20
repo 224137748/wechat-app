@@ -9288,14 +9288,14 @@ new _vuex.default.Store({
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.insertSong = exports.selectPlay = exports.addPlayList = exports.getSheetData = exports.getStatusBarHeight = void 0;var types = _interopRequireWildcard(__webpack_require__(/*! ./mutation-types.js */ 14));
+Object.defineProperty(exports, "__esModule", { value: true });exports.dispatchPrev = exports.dispatchNext = exports.dispatchTogglePlay = exports.dispatchLoop = exports.insertSong = exports.selectPlay = exports.addPlayList = exports.getSheetData = exports.getStatusBarHeight = void 0;var types = _interopRequireWildcard(__webpack_require__(/*! ./mutation-types.js */ 14));
 var _song = __webpack_require__(/*! ../utils/song.js */ 15);
 
 
 var _index = __webpack_require__(/*! ../config/index.js */ 19);
 
 
-var _axios = _interopRequireDefault(__webpack_require__(/*! axios */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}
+var _axios = _interopRequireDefault(__webpack_require__(/*! axios */ 20));var _this = void 0;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}
 
 var request = _axios.default.create({
   baseURL: 'http://findream.vip/api/music',
@@ -9396,8 +9396,6 @@ var selectPlay = function selectPlay(_ref6, _ref7) {var commit = _ref6.commit,st
     commit(types.SET_PALYLIST, list);
   }
   commit(types.SET_CURRENT_INDEX, index);
-  commit(types.SET_FULL_SCREEN, true);
-  commit(types.SET_PLAYING_STATE, true);
 };
 
 
@@ -9407,7 +9405,7 @@ exports.selectPlay = selectPlay;var insertSong = function insertSong(_ref8,
 
 song) {var commit = _ref8.commit,state = _ref8.state;
   var playList = state.playList.slice();
-  // let sequenceList = state.sequenceList.slice()
+  var sequenceList = state.sequenceList.slice();
   var currentIndex;
 
   // 当前播放列表中没有歌曲
@@ -9434,13 +9432,83 @@ song) {var commit = _ref8.commit,state = _ref8.state;
         playList.splice(fpIndex + 1, 1);
       }
     }
+
+
+    var currentSIndex = findIndex(sequenceList, currentSong) + 1;
+    var fsIndex = findIndex(sequenceList, song);
+    sequenceList.splice(currentSIndex, 0, song);
+    if (fsIndex > -1) {
+      if (currentSIndex > fsIndex) {
+        sequenceList.splice(fsIndex, 1);
+      } else {
+        sequenceList.splice(fsIndex + 1, 1);
+      }
+    }
   }
 
-
   commit(types.SET_PALYLIST, playList);
-  // commit(types.SET_SEQUENCE_LIST, sequenceList)
+  commit(types.SET_SEQUENCE_LIST, sequenceList);
   commit(types.SET_CURRENT_INDEX, currentIndex);
-};exports.insertSong = insertSong;
+};
+
+
+// 重播 音频
+exports.insertSong = insertSong;var dispatchLoop = function dispatchLoop(_ref9) {var state = _ref9.state,commit = _ref9.commit,getters = _ref9.getters;var _getters$currentSong =
+  getters.currentSong,name = _getters$currentSong.name,url = _getters$currentSong.url,image = _getters$currentSong.image,singer = _getters$currentSong.singer,duration = _getters$currentSong.duration;
+  state.audio.title = name;
+  state.audio.singer = singer;
+  state.audio.coverImgUrl = image;
+  state.audio.duration = duration;
+  state.audio.src = url;
+  state.audio.play();
+};
+
+// 播放、暂停
+exports.dispatchLoop = dispatchLoop;var dispatchTogglePlay = function dispatchTogglePlay(_ref10) {var state = _ref10.state,commit = _ref10.commit;
+  if (state.playing) {
+    state.audio.pause();
+  } else {
+    state.audio.play();
+  }
+};
+
+// 下一曲
+exports.dispatchTogglePlay = dispatchTogglePlay;var dispatchNext = function dispatchNext(_ref11) {var state = _ref11.state,commit = _ref11.commit,dispatch = _ref11.dispatch;var
+  playList = state.playList,currentIndex = state.currentIndex,playing = state.playing;
+  commit(types.SET_CURRENT_TIME, 0);
+  if (playList.length === 1) {
+    dispatch('dispatchLoop');
+    return Promise.resolve('loop');
+  } else {
+    var index = currentIndex + 1;
+    if (index === playList.length) {
+      index = 0;
+    }
+    commit(types.SET_CURRENT_INDEX, index);
+    if (!playing) {
+      dispatch('dispatchTogglePlay');
+    }
+  }
+};
+
+// 上一曲
+exports.dispatchNext = dispatchNext;var dispatchPrev = function dispatchPrev(_ref12) {var state = _ref12.state,commit = _ref12.commit,dispatch = _ref12.dispatch;var
+  playing = state.playing,playList = state.playList,currentIndex = state.currentIndex;
+  commit(types.SET_CURRENT_TIME, 0);
+  if (playList.length === 1) {
+    dispatch('dispatchLoop');
+    return Promise.resolve('loop');
+  } else {
+    var index = _this.currentIndex - 1;
+    if (index === -1) {
+      index = _this.playList.length - 1;
+    }
+    _this.setCurrentIndex(index);
+    if (!_this.playing) {
+      _this.togglePlaying();
+    }
+  }
+};exports.dispatchPrev = dispatchPrev;
 
 /***/ }),
 /* 14 */
@@ -9451,9 +9519,13 @@ song) {var commit = _ref8.commit,state = _ref8.state;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.SET_MODE = exports.SET_CURRENT_TIME = exports.SET_SONG_URL = exports.SET_SONG_LYRIC = exports.SET_FAVORITE_LIST = exports.SET_CURRENT_INDEX = exports.SET_SEQUENCE_LIST = exports.SET_PALYLIST = exports.SET_PLAYING_STATE = exports.SET_SHEET_DATA = exports.SET_STATUS_BAR_HEIGHT = void 0;var SET_STATUS_BAR_HEIGHT = 'SET_STATUS_BAR_HEIGHT';exports.SET_STATUS_BAR_HEIGHT = SET_STATUS_BAR_HEIGHT;
+Object.defineProperty(exports, "__esModule", { value: true });exports.SET_MODE = exports.SET_CURRENT_TIME = exports.SET_SONG_URL = exports.SET_SONG_LYRIC = exports.SET_FAVORITE_LIST = exports.SET_CURRENT_INDEX = exports.SET_SEQUENCE_LIST = exports.SET_PALYLIST = exports.SET_PLAYING_STATE = exports.SET_SONG_READY = exports.SET_SHEET_DATA = exports.SET_IS_HIDE = exports.SET_STATUS_BAR_HEIGHT = void 0;var SET_STATUS_BAR_HEIGHT = 'SET_STATUS_BAR_HEIGHT';exports.SET_STATUS_BAR_HEIGHT = SET_STATUS_BAR_HEIGHT;
+
+var SET_IS_HIDE = 'SET_IS_HIDE';exports.SET_IS_HIDE = SET_IS_HIDE;
 
 var SET_SHEET_DATA = 'SET_SHEET_DATA';exports.SET_SHEET_DATA = SET_SHEET_DATA;
+
+var SET_SONG_READY = 'SET_SONG_READY';exports.SET_SONG_READY = SET_SONG_READY;
 
 var SET_PLAYING_STATE = 'SET_PLAYING_STATE';exports.SET_PLAYING_STATE = SET_PLAYING_STATE;
 
@@ -12568,11 +12640,15 @@ module.exports = function isAxiosError(payload) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.currentTime = exports.currentSong = exports.audio = exports.currentIndex = exports.favoriteList = exports.sequenceList = exports.playList = exports.mode = exports.playing = exports.sheetData = exports.navBarHeight = exports.statusBarHeight = void 0;var statusBarHeight = function statusBarHeight(state) {return state.statusBarHeight;};exports.statusBarHeight = statusBarHeight;
+Object.defineProperty(exports, "__esModule", { value: true });exports.currentTime = exports.currentSong = exports.audio = exports.currentIndex = exports.favoriteList = exports.sequenceList = exports.playList = exports.mode = exports.playing = exports.songReady = exports.sheetData = exports.isHide = exports.navBarHeight = exports.statusBarHeight = void 0;var statusBarHeight = function statusBarHeight(state) {return state.statusBarHeight;};exports.statusBarHeight = statusBarHeight;
 
 var navBarHeight = function navBarHeight(state) {return state.statusBarHeight + 46;};exports.navBarHeight = navBarHeight;
 
+var isHide = function isHide(state) {return state.isHide;};exports.isHide = isHide;
+
 var sheetData = function sheetData(state) {return state.sheetData;};exports.sheetData = sheetData;
+
+var songReady = function songReady(state) {return state.songReady;};exports.songReady = songReady;
 
 var playing = function playing(state) {return state.playing;};exports.playing = playing;
 
@@ -12609,8 +12685,14 @@ var state = {
   // 顶部statusBarHeight
   statusBarHeight: 0,
 
+  // 是否隐藏小程序
+  isHide: false,
+
   // 歌单详情,缓存每一个歌单的信息
   sheetData: [],
+
+  // 音频是否canPlay
+  songReady: false,
 
   // 播放状态
   playing: false,
@@ -12678,11 +12760,17 @@ var mututations = (_mututations = {}, _defineProperty(_mututations,
 types.SET_STATUS_BAR_HEIGHT, function (state, height) {
   state.statusBarHeight = height;
 }), _defineProperty(_mututations,
+types.SET_IS_HIDE, function (state, flag) {
+  state.isHide = flag;
+}), _defineProperty(_mututations,
 types.SET_SHEET_DATA, function (state, sheetData) {
   state.sheetData = sheetData;
 }), _defineProperty(_mututations,
-types.SET_PLAYING_STATE, function (state, falg) {
-  state.playing = falg;
+types.SET_SONG_READY, function (state, flag) {
+  state.songReady = flag;
+}), _defineProperty(_mututations,
+types.SET_PLAYING_STATE, function (state, flag) {
+  state.playing = flag;
 }), _defineProperty(_mututations,
 types.SET_SEQUENCE_LIST, function (state, list) {
   state.sequenceList = list;
@@ -13086,31 +13174,7 @@ Lyric = /*#__PURE__*/function () {
     } }]);return Lyric;}();exports.default = Lyric;
 
 /***/ }),
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */
+/* 77 */
 /*!******************************************!*\
   !*** C:/study/wechat-app/utils/index.js ***!
   \******************************************/

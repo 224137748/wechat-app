@@ -90,8 +90,6 @@ export default {
 			scrollIntoView: '',
 			// 进度条按钮 offsetWidth
 			offsetWidth: 0,
-			songReady: false,
-			currentTime: 0
 		};
 	},
 	computed: {
@@ -122,7 +120,7 @@ export default {
 			});
 			return index > -1;
 		},
-		...mapGetters(['currentSong', 'playing', 'currentIndex', 'statusBarHeight', 'audio', 'mode', 'favoriteList', 'sequenceList', 'playList'])
+		...mapGetters(['currentSong', 'playing', 'currentIndex', 'statusBarHeight', 'audio', 'mode', 'favoriteList', 'sequenceList', 'playList', 'songReady', 'isHide', 'currentTime'])
 	},
 	created() {
 		this.touch = {};
@@ -209,8 +207,6 @@ export default {
 			this.setCurrentIndex(index);
 		},
 		loop() {
-			this.audio.seek(0);
-			this.audio.play();
 			if (this.currentLyric) {
 				this.currentLyric.seek(0);
 			}
@@ -219,31 +215,21 @@ export default {
 			if (!this.songReady) {
 				return;
 			}
-			if (this.playList.length === 1) {
-				this.loop();
-			} else {
-				let index = this.currentIndex - 1;
-				if (index === -1) {
-					index = this.playList.length - 1;
+			this.dispatchPrev().then(res => {
+				// 单曲循环的时候不清除歌词
+				if (res === 'loop') {
+					this.loop()
+				}else {
+					this.currentLyric = null
 				}
-				this.setCurrentIndex(index);
-				if (!this.playing) {
-					this.togglePlaying();
-				}
-			}
-			this.songReady = false;
-			this.currentLyric = null
+			})
 		},
 
 		togglePlaying() {
 			if (!this.songReady) {
 				return;
 			}
-			if (this.playing) {
-				this.audio.pause();
-			} else {
-				this.audio.play();
-			}
+			this.dispatchTogglePlay()
 			if (this.currentLyric) {
 				this.currentLyric.togglePlay();
 			}
@@ -252,21 +238,23 @@ export default {
 			if (!this.songReady) {
 				return;
 			}
-			if (this.playList.length === 1) {
-				this.loop();
-				return;
-			} else {
-				let index = this.currentIndex + 1;
-				if (index === this.playList.length) {
-					index = 0;
+			this.dispatchNext().then(res => {
+				if (res === 'loop') {
+					this.loop()
+				} else {
+					this.currentLyric = null
 				}
-				this.setCurrentIndex(index);
-				if (!this.playing) {
-					this.togglePlaying();
-				}
+			})
+		},
+		
+		// 重置歌词
+		resetLyric() {
+			const song = this.currentSong
+			this.currentLyric = new Lyric(song.lyric.lrc, song.lyric.tlyric, this.handleLyric);
+			this.currentLyric.seek(this.currentTime * 1000)
+			if (this.playing) {
+				this.currentLyric.play()
 			}
-			this.currentLyric = null
-			this.songReady = false;
 		},
 		/* ====================== progress-bar 逻辑 ============================= */
 		progressClick(e) {
@@ -290,7 +278,6 @@ export default {
 		},
 		// 拖拽操作栏
 		progressTouchStart(e) {
-			console.log(e);
 			this.touch.initiated = true;
 			this.touch.startX = e.mp.touches[0].pageX;
 			this.touch.left = this.offsetWidth;
@@ -309,50 +296,33 @@ export default {
 			this._triggerPercent();
 		},
 		...mapMutations({
+			setPlayingState: 'SET_PLAYING_STATE',
 			setPlayMode: 'SET_MODE',
 			setCurrentIndex: 'SET_CURRENT_INDEX',
 			setPlayList: 'SET_PALYLIST'
-		})
+		}),
+		...mapActions(['dispatchLoop', 'dispatchTogglePlay', 'dispatchNext',  'dispatchPrev'])
 	},
 	watch: {
 		currentSong: {
 			immediate: true,
+			deep:true,
 			async handler(newSong, oldSong) {
-				console.log('newSong', newSong);
-				console.log(this.audio);
-				if (!newSong?.id) return;
-				if (newSong?.id === oldSong?.id) return;
-
-				// 获取音频、歌词
-				const [playUrl, lyric] = await Promise.allSettled([newSong.getUrl(), newSong.getLyric()]);
-				console.log('lyric ===>', playUrl, lyric);
+				console.log('newSong', newSong)
+				if (!newSong.lyric) return;
 				// 处理歌词
-				if (lyric.status === 'fulfilled') {
-					this.currentLyric = new Lyric(lyric.value.lrc, lyric.value.tlyric, this.handleLyric);
-					// 滚动到第一条歌词
-					this.$nextTick(() =>{
-						this.scrollIntoView = 'lyric-0'
-					})
-					// console.log(this.currentLyric)
-				}
-				const { name, url, image, singer, duration } = newSong;
-				this.audio.title = name;
-				this.audio.singer = singer;
-				this.audio.coverImgUrl = image;
-				this.audio.duration = duration;
-				this.audio.src = url;
-				this.audio.onCanplay(() => {
-					this.songReady = true;
-					this.audio.play();
-				});
-				this.audio.onTimeUpdate(() => {
-					this.currentTime = this.audio.currentTime;
-				});
+				this.currentLyric = new Lyric(newSong.lyric.lrc, newSong.lyric.tlyric, this.handleLyric);
+				// 滚动到第一条歌词
+				this.$nextTick(() =>{
+					this.scrollIntoView = 'lyric-0'
+				})
+				
 			}
 		},
 		// 监听播放器播放
 		playing(newVal) {
 			console.log('play_state_change', newVal);
+			if (!this.currentLyric) return
 			if (newVal) {
 				// 播放歌词
 				this.currentLyric.play();
@@ -367,6 +337,19 @@ export default {
 				const barWidth = this.progressRect.width - PROGRESSBTNWIDTH;
 				const offsetWidth = (newPencent / 100) * barWidth;
 				this.offsetWidth = offsetWidth;
+			}
+		},
+		// 重置歌词
+		isHide(newVal) {
+			if (!newVal) {
+				this.resetLyric()
+			}
+		},
+		// 单曲循环，后重置audio currentTime, 修改歌词
+		currentTime(newVal, oldVal) {
+			if (newVal === 0 && newVal !== oldVal && this.currentLyric) {
+				this.currentLyric.seek(0)
+				this.scrollIntoView = 'lyric-0'
 			}
 		}
 	}

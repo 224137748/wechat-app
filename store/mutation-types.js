@@ -1,6 +1,10 @@
 export const SET_STATUS_BAR_HEIGHT = 'SET_STATUS_BAR_HEIGHT'
 
+export const SET_IS_HIDE = 'SET_IS_HIDE'
+
 export const SET_SHEET_DATA = 'SET_SHEET_DATA'
+
+export const SET_SONG_READY = 'SET_SONG_READY'
 
 export const SET_PLAYING_STATE = 'SET_PLAYING_STATE'
 
