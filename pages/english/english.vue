@@ -13,7 +13,7 @@
 		<scroll-view class="sheet-scroll-wrap" scroll-y="true">
 			<view>
 				<view class="sheet-play-wrap">
-					<text class="icon" @click="handleAddPlayList"></text>
+					<text class="iconfont icon-ziyuan" @click="handleAddPlayList"></text>
 					<text class="tit">
 						<text>播放全部</text>
 						<text class="count">（{{currentSheetData.length || 0}}）</text>
@@ -78,7 +78,7 @@ export default {
 			if (this.currentType && this.sheetData.length) {
 				const {sheetData, currentType} = this;
 				const data = sheetData.find(item => item.type === currentType);
-				// console.log('currentSheetData', data)
+				console.log('currentSheetData', data)
 				return data || null;
 			}
 			return null
@@ -106,9 +106,15 @@ export default {
 		
 		// 添加到播放列表
 		handleAddPlayList() {
-			
+			this.addPlayList({
+				list: this.currentSheetData
+			}).then(() => {
+				wx.navigateTo({
+					url: '../player/player'
+				})
+			})
 		},
-		...mapActions(['getSheetData', 'insertSong'])
+		...mapActions(['getSheetData', 'insertSong', 'addPlayList'])
 	},
 	watch:{
 		currentSheetData: {
@@ -185,12 +191,9 @@ export default {
 	align-items: center;
 	margin: 44rpx 20rpx 50rpx;
 }
-.sheet-play-wrap .icon {
-	width: 36rpx;
-	height: 36rpx;
-	background-color: #fa3e3a;
+.sheet-play-wrap .icon-ziyuan{
 	margin-right: 20rpx;
-	border-radius: 50%;
+	color: #6b8cf1;
 }
 .sheet-play-wrap .tit{
 	font-size: 30rpx;

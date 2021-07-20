@@ -872,7 +872,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"wechat-app","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"wechat-app","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7446,7 +7446,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"wechat-app","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"wechat-app","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7467,14 +7467,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"wechat-app","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"wechat-app","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"wechat-app","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"wechat-app","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7560,7 +7560,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"wechat-app","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"wechat-app","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -9265,8 +9265,8 @@ var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 8));
 var actions = _interopRequireWildcard(__webpack_require__(/*! ./actions.js */ 13));
 var getters = _interopRequireWildcard(__webpack_require__(/*! ./getters.js */ 49));
 var _state = _interopRequireDefault(__webpack_require__(/*! ./state.js */ 50));
-var _mutations = _interopRequireDefault(__webpack_require__(/*! ./mutations.js */ 51));
-var _logger = _interopRequireDefault(__webpack_require__(/*! vuex/dist/logger */ 52));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _mutations = _interopRequireDefault(__webpack_require__(/*! ./mutations.js */ 52));
+var _logger = _interopRequireDefault(__webpack_require__(/*! vuex/dist/logger */ 53));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 _vue.default.use(_vuex.default);
 
@@ -9288,7 +9288,7 @@ new _vuex.default.Store({
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.insertSong = exports.selectPlay = exports.getSheetData = exports.getStatusBarHeight = void 0;var types = _interopRequireWildcard(__webpack_require__(/*! ./mutation-types.js */ 14));
+Object.defineProperty(exports, "__esModule", { value: true });exports.insertSong = exports.selectPlay = exports.addPlayList = exports.getSheetData = exports.getStatusBarHeight = void 0;var types = _interopRequireWildcard(__webpack_require__(/*! ./mutation-types.js */ 14));
 var _song = __webpack_require__(/*! ../utils/song.js */ 15);
 
 
@@ -9357,7 +9357,7 @@ exports.getStatusBarHeight = getStatusBarHeight;var getSheetData = function getS
     // let data = res.result.data;
     var data = res.result.data.playlist.tracks;
 
-    console.log('data', data);
+    // console.log('data', data);
 
     data = data.filter(function (item) {return !!item.id;}).map(function (item) {return (0, _song.createSong)(item);});
     // const saveSongs = data.slice(47,59)
@@ -9373,17 +9373,22 @@ exports.getStatusBarHeight = getStatusBarHeight;var getSheetData = function getS
   finally(function () {
     wx.hideLoading();
   });
-};exports.getSheetData = getSheetData;
-
-var selectPlay = function selectPlay(_ref4, _ref5)
+};
 
 
+/* ========================================  播放歌曲逻辑 ==================================================================== */
 
-
-
-{var commit = _ref4.commit,state = _ref4.state;var list = _ref5.list,index = _ref5.index;
+// 加入播放列表
+exports.getSheetData = getSheetData;var addPlayList = function addPlayList(_ref4, _ref5) {var commit = _ref4.commit,state = _ref4.state;var list = _ref5.list;
+  commit(types.SET_MODE, _index.playMode.sequence);
+  commit(types.SET_PALYLIST, list);
   commit(types.SET_SEQUENCE_LIST, list);
-  if (state.mode === playMode.random) {
+  commit(types.SET_CURRENT_INDEX, 0);
+};exports.addPlayList = addPlayList;
+
+var selectPlay = function selectPlay(_ref6, _ref7) {var commit = _ref6.commit,state = _ref6.state;var list = _ref7.list,index = _ref7.index;
+  commit(types.SET_SEQUENCE_LIST, list);
+  if (state.mode === _index.playMode.random) {
     var randomList = shuffle(list);
     commit(types.SET_PALYLIST, randomList);
     index = findIndex(randomList, list[index]);
@@ -9397,10 +9402,10 @@ var selectPlay = function selectPlay(_ref4, _ref5)
 
 
 // 插入歌曲
-exports.selectPlay = selectPlay;var insertSong = function insertSong(_ref6,
+exports.selectPlay = selectPlay;var insertSong = function insertSong(_ref8,
 
 
-song) {var commit = _ref6.commit,state = _ref6.state;
+song) {var commit = _ref8.commit,state = _ref8.state;
   var playList = state.playList.slice();
   // let sequenceList = state.sequenceList.slice()
   var currentIndex;
@@ -9435,8 +9440,6 @@ song) {var commit = _ref6.commit,state = _ref6.state;
   commit(types.SET_PALYLIST, playList);
   // commit(types.SET_SEQUENCE_LIST, sequenceList)
   commit(types.SET_CURRENT_INDEX, currentIndex);
-  // commit(types.SET_FULL_SCREEN, true)
-  commit(types.SET_PLAYING_STATE, true);
 };exports.insertSong = insertSong;
 
 /***/ }),
@@ -9448,13 +9451,15 @@ song) {var commit = _ref6.commit,state = _ref6.state;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.SET_SONG_URL = exports.SET_SONG_LYRIC = exports.SET_FAVORITE_LIST = exports.SET_CURRENT_INDEX = exports.SET_PALYLIST = exports.SET_PLAYING_STATE = exports.SET_SHEET_DATA = exports.SET_STATUS_BAR_HEIGHT = void 0;var SET_STATUS_BAR_HEIGHT = 'SET_STATUS_BAR_HEIGHT';exports.SET_STATUS_BAR_HEIGHT = SET_STATUS_BAR_HEIGHT;
+Object.defineProperty(exports, "__esModule", { value: true });exports.SET_MODE = exports.SET_CURRENT_TIME = exports.SET_SONG_URL = exports.SET_SONG_LYRIC = exports.SET_FAVORITE_LIST = exports.SET_CURRENT_INDEX = exports.SET_SEQUENCE_LIST = exports.SET_PALYLIST = exports.SET_PLAYING_STATE = exports.SET_SHEET_DATA = exports.SET_STATUS_BAR_HEIGHT = void 0;var SET_STATUS_BAR_HEIGHT = 'SET_STATUS_BAR_HEIGHT';exports.SET_STATUS_BAR_HEIGHT = SET_STATUS_BAR_HEIGHT;
 
 var SET_SHEET_DATA = 'SET_SHEET_DATA';exports.SET_SHEET_DATA = SET_SHEET_DATA;
 
 var SET_PLAYING_STATE = 'SET_PLAYING_STATE';exports.SET_PLAYING_STATE = SET_PLAYING_STATE;
 
 var SET_PALYLIST = 'SET_PALYLIST';exports.SET_PALYLIST = SET_PALYLIST;
+
+var SET_SEQUENCE_LIST = 'SET_SEQUENCE_LIST';exports.SET_SEQUENCE_LIST = SET_SEQUENCE_LIST;
 
 var SET_CURRENT_INDEX = 'SET_CURRENT_INDEX';exports.SET_CURRENT_INDEX = SET_CURRENT_INDEX;
 
@@ -9463,6 +9468,10 @@ var SET_FAVORITE_LIST = 'SET_FAVORITE_LIST';exports.SET_FAVORITE_LIST = SET_FAVO
 var SET_SONG_LYRIC = 'SET_SONG_LYRIC';exports.SET_SONG_LYRIC = SET_SONG_LYRIC;
 
 var SET_SONG_URL = 'SET_SONG_URL';exports.SET_SONG_URL = SET_SONG_URL;
+
+var SET_CURRENT_TIME = 'SET_CURRENT_TIME';exports.SET_CURRENT_TIME = SET_CURRENT_TIME;
+
+var SET_MODE = 'SET_MODE';exports.SET_MODE = SET_MODE;
 
 /***/ }),
 /* 15 */
@@ -10382,7 +10391,12 @@ if (hadRuntime) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.CLOUD_ENV = void 0;var CLOUD_ENV = 'dev-2g6vkydrb65a226e';exports.CLOUD_ENV = CLOUD_ENV;
+Object.defineProperty(exports, "__esModule", { value: true });exports.playMode = exports.CLOUD_ENV = void 0;var CLOUD_ENV = 'dev-2g6vkydrb65a226e';exports.CLOUD_ENV = CLOUD_ENV;
+
+var playMode = {
+  sequence: 0,
+  loop: 1,
+  random: 2 };exports.playMode = playMode;
 
 /***/ }),
 /* 20 */
@@ -12554,13 +12568,15 @@ module.exports = function isAxiosError(payload) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.currentSong = exports.audio = exports.currentIndex = exports.favoriteList = exports.sequenceList = exports.playList = exports.playing = exports.sheetData = exports.navBarHeight = exports.statusBarHeight = void 0;var statusBarHeight = function statusBarHeight(state) {return state.statusBarHeight;};exports.statusBarHeight = statusBarHeight;
+Object.defineProperty(exports, "__esModule", { value: true });exports.currentTime = exports.currentSong = exports.audio = exports.currentIndex = exports.favoriteList = exports.sequenceList = exports.playList = exports.mode = exports.playing = exports.sheetData = exports.navBarHeight = exports.statusBarHeight = void 0;var statusBarHeight = function statusBarHeight(state) {return state.statusBarHeight;};exports.statusBarHeight = statusBarHeight;
 
 var navBarHeight = function navBarHeight(state) {return state.statusBarHeight + 46;};exports.navBarHeight = navBarHeight;
 
 var sheetData = function sheetData(state) {return state.sheetData;};exports.sheetData = sheetData;
 
 var playing = function playing(state) {return state.playing;};exports.playing = playing;
+
+var mode = function mode(state) {return state.mode;};exports.mode = mode;
 
 var playList = function playList(state) {return state.playList;};exports.playList = playList;
 
@@ -12576,6 +12592,8 @@ var currentSong = function currentSong(state) {
   return state.playList[state.currentIndex] || {};
 };exports.currentSong = currentSong;
 
+var currentTime = function currentTime(state) {return state.currentTime;};exports.currentTime = currentTime;
+
 /***/ }),
 /* 50 */
 /*!******************************************!*\
@@ -12585,7 +12603,9 @@ var currentSong = function currentSong(state) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var state = {
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _index = __webpack_require__(/*! ../config/index.js */ 19);
+var _cache = __webpack_require__(/*! ../config/cache.js */ 51);
+var state = {
   // 顶部statusBarHeight
   statusBarHeight: 0,
 
@@ -12598,6 +12618,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   // 播放列表
   playList: [],
 
+  // 播放模式
+  mode: _index.playMode.sequence,
+
   //  随机播放，顺序播放，小窗显示列表
   sequenceList: [],
 
@@ -12605,16 +12628,43 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   currentIndex: -1,
 
   // 收藏列表
-  favoriteList: [],
+  favoriteList: (0, _cache.loadFavorite)(),
 
   // 播放器
-  audio: wx.getBackgroundAudioManager() };var _default =
+  audio: wx.getBackgroundAudioManager(),
+
+  // 播放时间
+  currentTime: 0 };var _default =
 
 
 state;exports.default = _default;
 
 /***/ }),
 /* 51 */
+/*!*******************************************!*\
+  !*** C:/study/wechat-app/config/cache.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.loadFavorite = loadFavorite;var FAVORITE_KEY = '_favorite_';
+
+
+// 获取收藏列表
+function loadFavorite() {
+  var data = [];
+  wx.getStorage({
+    key: FAVORITE_KEY,
+    success: function success(res) {
+      console.log(res.data);
+    } });
+
+  return data;
+}
+
+/***/ }),
+/* 52 */
 /*!**********************************************!*\
   !*** C:/study/wechat-app/store/mutations.js ***!
   \**********************************************/
@@ -12633,6 +12683,9 @@ types.SET_SHEET_DATA, function (state, sheetData) {
 }), _defineProperty(_mututations,
 types.SET_PLAYING_STATE, function (state, falg) {
   state.playing = falg;
+}), _defineProperty(_mututations,
+types.SET_SEQUENCE_LIST, function (state, list) {
+  state.sequenceList = list;
 }), _defineProperty(_mututations,
 types.SET_PALYLIST, function (state, list) {
   state.playList = list;
@@ -12654,6 +12707,12 @@ types.SET_SONG_LYRIC, function (state, _ref2) {var id = _ref2.id,lyric = _ref2.l
   if (song) {
     song.lyric = lyric;
   }
+}), _defineProperty(_mututations,
+types.SET_CURRENT_TIME, function (state, time) {
+  state.currentTime = time;
+}), _defineProperty(_mututations,
+types.SET_MODE, function (state, mode) {
+  state.mode = mode;
 }), _mututations);var _default =
 
 
@@ -12661,7 +12720,7 @@ types.SET_SONG_LYRIC, function (state, _ref2) {var id = _ref2.id,lyric = _ref2.l
 mututations;exports.default = _default;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /*!******************************************!*\
   !*** ./node_modules/vuex/dist/logger.js ***!
   \******************************************/
@@ -12825,7 +12884,6 @@ mututations;exports.default = _default;
 
 
 /***/ }),
-/* 53 */,
 /* 54 */,
 /* 55 */,
 /* 56 */,
@@ -12847,7 +12905,8 @@ mututations;exports.default = _default;
 /* 72 */,
 /* 73 */,
 /* 74 */,
-/* 75 */
+/* 75 */,
+/* 76 */
 /*!******************************************!*\
   !*** C:/study/wechat-app/utils/lyric.js ***!
   \******************************************/
@@ -13025,6 +13084,54 @@ Lyric = /*#__PURE__*/function () {
     offset) {
       this.play(offset);
     } }]);return Lyric;}();exports.default = Lyric;
+
+/***/ }),
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */
+/*!******************************************!*\
+  !*** C:/study/wechat-app/utils/index.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.shuffle = shuffle;function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function shuffle(arr) {
+  var _arr = arr.slice();
+  for (var i = 0; i < _arr.length; i++) {
+    var j = getRandomInt(0, i);
+    var t = _arr[i];
+    _arr[i] = _arr[j];
+    _arr[j] = t;
+  }
+  return _arr;
+}
 
 /***/ })
 ]]);

@@ -4,7 +4,8 @@
     "pages/index/index",
     "pages/player/player",
     "pages/maogai/maogai",
-    "pages/sixiu/sixiu"
+    "pages/sixiu/sixiu",
+    "pages/user/user"
   ],
   "subPackages": [],
   "window": {
@@ -16,5 +17,6 @@
   "requiredBackgroundModes": [
     "audio"
   ],
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }

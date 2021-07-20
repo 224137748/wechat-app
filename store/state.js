@@ -1,3 +1,5 @@
+import {playMode} from '../config/index.js'
+import {loadFavorite} from '../config/cache.js'
 const state = {
 	// 顶部statusBarHeight
 	statusBarHeight: 0,
@@ -11,6 +13,9 @@ const state = {
 	// 播放列表
 	playList: [],
 	
+	// 播放模式
+	mode: playMode.sequence,
+	
 	//  随机播放，顺序播放，小窗显示列表
 	sequenceList: [],
 	
@@ -18,10 +23,13 @@ const state = {
 	currentIndex: -1,
 	
 	// 收藏列表
-	favoriteList: [],
+	favoriteList: loadFavorite(),
 	
 	// 播放器
-	audio: wx.getBackgroundAudioManager()
+	audio: wx.getBackgroundAudioManager(),
+	
+	// 播放时间
+	currentTime: 0
 }
 
 export default state

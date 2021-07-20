@@ -23,8 +23,7 @@ export default {
 			this.setPlayingState(false);
 		});
 		this.audio.onTimeUpdate(() => {
-			// props.setPlaying.call(this, { currentTime: audioDom.currentTime })
-			// console.log('current_time', this.audio.currentTime);
+			this.setCurrentTime(this.audio.currentTime)
 		});
 		this.audio.onError((error) => {
 			console.log('音频捕获到错误:', error)
@@ -46,7 +45,8 @@ export default {
 	},
 	methods: {
 		...mapMutations({
-			setPlayingState: 'SET_PLAYING_STATE'
+			setPlayingState: 'SET_PLAYING_STATE',
+			setCurrentTime: 'SET_CURRENT_TIME'
 		}),
 		...mapActions(['getStatusBarHeight'])
 	}
@@ -54,6 +54,7 @@ export default {
 </script>
 
 <style>
+@import url("./font/iconfont.css");
 /*每个页面公共css */
 .no-wrap {
 	white-space: nowrap;

@@ -69,12 +69,9 @@
 	        align-items: center;
 	margin: 44rpx 20rpx 50rpx;
 }
-.sheet-play-wrap .icon.data-v-45fcd9e8 {
-	width: 36rpx;
-	height: 36rpx;
-	background-color: #fa3e3a;
+.sheet-play-wrap .icon-ziyuan.data-v-45fcd9e8{
 	margin-right: 20rpx;
-	border-radius: 50%;
+	color: #6b8cf1;
 }
 .sheet-play-wrap .tit.data-v-45fcd9e8{
 	font-size: 30rpx;

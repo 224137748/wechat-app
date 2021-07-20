@@ -3,7 +3,7 @@ import {
 	createSong
 } from '../utils/song.js';
 import {
-	CLOUD_ENV
+	CLOUD_ENV,playMode
 } from '../config/index.js'
 import axios from 'axios';
 
@@ -67,7 +67,7 @@ export const getSheetData = function({
 			// let data = res.result.data;
 			let data = res.result.data.playlist.tracks;
 			
-			console.log('data', data);
+			// console.log('data', data);
 			
 			data = data.filter(item => !!item.id).map(item => createSong(item))
 			// const saveSongs = data.slice(47,59)
@@ -85,13 +85,18 @@ export const getSheetData = function({
 		});
 }
 
-export const selectPlay = function({
-	commit,
-	state
-}, {
-	list,
-	index
-}) {
+
+/* ========================================  播放歌曲逻辑 ==================================================================== */
+
+// 加入播放列表
+export const addPlayList = function({commit, state}, {list}) {
+	commit(types.SET_MODE, playMode.sequence)
+	commit(types.SET_PALYLIST, list)
+	commit(types.SET_SEQUENCE_LIST, list)
+	commit(types.SET_CURRENT_INDEX,0)
+}
+
+export const selectPlay = function({commit,	state}, {	list,	index}) {
 	commit(types.SET_SEQUENCE_LIST, list)
 	if (state.mode === playMode.random) {
 		let randomList = shuffle(list)
@@ -145,6 +150,4 @@ export const insertSong = function({
 	commit(types.SET_PALYLIST, playList)
 	// commit(types.SET_SEQUENCE_LIST, sequenceList)
 	commit(types.SET_CURRENT_INDEX, currentIndex)
-	// commit(types.SET_FULL_SCREEN, true)
-	commit(types.SET_PLAYING_STATE, true)
 }

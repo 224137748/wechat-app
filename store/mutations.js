@@ -10,6 +10,9 @@ const mututations = {
 	[types.SET_PLAYING_STATE](state, falg) {
 		state.playing = falg
 	},
+	[types.SET_SEQUENCE_LIST](state, list) {
+		state.sequenceList = list
+	},
 	[types.SET_PALYLIST](state, list) {
 		state.playList = list
 	},
@@ -30,6 +33,12 @@ const mututations = {
 		if (song) {
 			song.lyric = lyric
 		}
+	},
+	[types.SET_CURRENT_TIME](state, time) {
+		state.currentTime = time
+	},
+	[types.SET_MODE](state, mode) {
+		state.mode = mode
 	}
 }
 

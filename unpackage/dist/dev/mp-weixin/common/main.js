@@ -118,8 +118,7 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function ownKeys(object, enumerab
       _this.setPlayingState(false);
     });
     this.audio.onTimeUpdate(function () {
-      // props.setPlaying.call(this, { currentTime: audioDom.currentTime })
-      // console.log('current_time', this.audio.currentTime);
+      _this.setCurrentTime(_this.audio.currentTime);
     });
     this.audio.onError(function (error) {
       console.log('音频捕获到错误:', error);
@@ -141,7 +140,8 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function ownKeys(object, enumerab
   },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)({
-    setPlayingState: 'SET_PLAYING_STATE' })),
+    setPlayingState: 'SET_PLAYING_STATE',
+    setCurrentTime: 'SET_CURRENT_TIME' })),
 
   (0, _vuex.mapActions)(['getStatusBarHeight'])) };exports.default = _default;
 
