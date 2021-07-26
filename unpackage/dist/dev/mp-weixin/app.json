@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/english/english",
     "pages/index/index",
+    "pages/english/english",
     "pages/player/player",
     "pages/maogai/maogai",
     "pages/sixiu/sixiu",
@@ -14,9 +14,22 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
+  "tabBar": {
+    "color": "#d7d7d7",
+    "selectedColor": "#6b8cf1",
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/index"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/user/user"
+      }
+    ]
+  },
   "requiredBackgroundModes": [
     "audio"
   ],
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }
