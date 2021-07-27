@@ -5,7 +5,8 @@
     "pages/player/player",
     "pages/maogai/maogai",
     "pages/sixiu/sixiu",
-    "pages/user/user"
+    "pages/user/user",
+    "pages/computer/computer"
   ],
   "subPackages": [],
   "window": {

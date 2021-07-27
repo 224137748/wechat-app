@@ -10,7 +10,8 @@
 	top: 0;
 	width: 100%;
 	background-color: #fff;
-	box-shadow: 0 0 4rpx 1rpx rgb(0 0 0 / 20%);
+	-webkit-box-shadow: 0 0 4rpx 1rpx rgb(0 0 0 / 20%);
+	        box-shadow: 0 0 4rpx 1rpx rgb(0 0 0 / 20%);
 }
 .scroll.data-v-45fcd9e8 {
 	width: 100%;

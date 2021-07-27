@@ -29,7 +29,7 @@
 		
 		<view class="nav">
 			<button class="nav-item" @click="goToPage('../english/english?type=cet4')">英语</button>
-			<button class="nav-item" @click="goToPage('../maogai/maogai')">毛概</button>
+			<button class="nav-item" @click="goToPage('../computer/computer')">计算机</button>
 			<button class="nav-item" @click="goToPage('../sixiu/sixiu')">思修</button>
 			<button class="nav-item border-top" @click="goToPage('../english/english')">英语</button>
 			<button class="nav-item border-top" @click="goToPage('../maogai/maogai')">毛概</button>

@@ -85,6 +85,7 @@
 	overflow: hidden;
 }
 .skeleton {
+	background-image: -webkit-gradient(linear, left top, right top, color-stop(25%, #f0f0f0), color-stop(37%, #e3e3e3), color-stop(63%, #f0f0f0));
 	background-image: -webkit-linear-gradient(left, #f0f0f0 25%, #e3e3e3 37%, #f0f0f0 63%);
 	background-image: linear-gradient(90deg, #f0f0f0 25%, #e3e3e3 37%, #f0f0f0 63%);
 	background-size: 400% 100%;
