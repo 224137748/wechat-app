@@ -8816,12 +8816,25 @@ if (hadRuntime) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.playMode = exports.CLOUD_ENV = void 0;var CLOUD_ENV = 'dev-2g6vkydrb65a226e';exports.CLOUD_ENV = CLOUD_ENV;
+Object.defineProperty(exports, "__esModule", { value: true });exports.COMPUTER_SECTION_TYPES = exports.playMode = exports.CLOUD_ENV = void 0;var CLOUD_ENV = 'dev-2g6vkydrb65a226e';exports.CLOUD_ENV = CLOUD_ENV;
 
 var playMode = {
   sequence: 0,
   loop: 1,
-  random: 2 };exports.playMode = playMode;
+  random: 2 };
+
+
+// computer section_types 计算机答题 章节枚举列表
+exports.playMode = playMode;var COMPUTER_SECTION_TYPES = {
+  '1': '第一章 基础知识',
+  '2': '第二章 操作系统应用',
+  '3': '第三章 文字处理',
+  '4': '第四章 电子表格',
+  '5': '第五章 演示文稿',
+  '6': '第六章 计算机网络基础',
+  '7': '第七章 Internet应用',
+  '8': '第八章 信息安全与网络道德',
+  '9': '第九章 计算机多媒体技术' };exports.COMPUTER_SECTION_TYPES = COMPUTER_SECTION_TYPES;
 
 /***/ }),
 /* 12 */

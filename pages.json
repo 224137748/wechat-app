@@ -43,17 +43,16 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/computer/computer",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+
 		}
-	    ,{
-            "path" : "pages/computer/computer",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"tabBar": {
 		"color": "#d7d7d7",
 		"selectedColor": "#6b8cf1",
