@@ -175,7 +175,7 @@
 
 	.top-wrap {
 		overflow: hidden;
-		background: linear-gradient(#fff,#f5f7f8);
+		background: linear-gradient(#fff, #f5f7f8);
 	}
 
 	.header {
@@ -270,6 +270,7 @@
 		width: 690rpx;
 		margin: auto;
 	}
+
 	.section-item {
 		display: flex;
 		align-items: center;
@@ -278,9 +279,11 @@
 		border-radius: 16rpx;
 		background-color: #fff;
 	}
+
 	.section-info {
 		flex: 1;
 	}
+
 	.section-title {
 		font-size: 28rpx;
 		line-height: 48rpx;
@@ -291,6 +294,7 @@
 		text-overflow: ellipsis;
 		margin-bottom: 6rpx;
 	}
+
 	.section-desc {
 		display: flex;
 		font-size: 24rpx;
@@ -300,14 +304,16 @@
 		white-space: nowrap;
 		text-overflow: ellipsis;
 	}
+
 	.rate-info {
 		margin-right: 10rpx;
 	}
+
 	.correct-status {
 		color: #71c1a0;
 	}
+
 	.error-status {
 		color: #d95c51;
 	}
-	
 </style>

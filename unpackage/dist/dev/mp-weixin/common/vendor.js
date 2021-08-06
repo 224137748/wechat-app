@@ -10115,7 +10115,7 @@ new _vuex.default.Store({
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.dispatchPrev = exports.dispatchNext = exports.dispatchTogglePlay = exports.dispatchLoop = exports.insertSong = exports.selectPlay = exports.addPlayList = exports.getSheetData = exports.getStatusBarHeight = void 0;var types = _interopRequireWildcard(__webpack_require__(/*! ./mutation-types.js */ 18));
+Object.defineProperty(exports, "__esModule", { value: true });exports.dispatchLogin = exports.dispatchGetUserInfo = exports.dispatchPrev = exports.dispatchNext = exports.dispatchTogglePlay = exports.dispatchLoop = exports.insertSong = exports.selectPlay = exports.addPlayList = exports.getSheetData = exports.getStatusBarHeight = void 0;var types = _interopRequireWildcard(__webpack_require__(/*! ./mutation-types.js */ 18));
 var _song = __webpack_require__(/*! ../utils/song.js */ 19);
 
 
@@ -10335,7 +10335,60 @@ exports.dispatchNext = dispatchNext;var dispatchPrev = function dispatchPrev(_re
       _this.togglePlaying();
     }
   }
-};exports.dispatchPrev = dispatchPrev;
+};
+
+/* ==================  用户  =========================== */exports.dispatchPrev = dispatchPrev;
+
+var dispatchGetUserInfo = function dispatchGetUserInfo(_ref13) {var commit = _ref13.commit,state = _ref13.state;
+  if (state.userInfo) return;
+
+  var getUserInfo = function getUserInfo() {
+    wx.getUserProfile({
+      success: function success(res) {
+        commit(types.SET_USERINFO, res.userInfo);
+      } });
+
+  };
+
+  // 查看是否有权限
+  wx.getSetting({
+    success: function success(res) {
+      console.log(res);
+      if (res.authSetting['scope.userInfo']) {
+        getUserInfo();
+      } else {
+        wx.authorize({
+          scope: 'scope.userInfo',
+          success: function success() {
+            getUserInfo();
+          } });
+
+      }
+
+    } });
+
+};exports.dispatchGetUserInfo = dispatchGetUserInfo;
+
+var dispatchLogin = function dispatchLogin(_ref14) {var commit = _ref14.commit,state = _ref14.state;
+  wx.showLoading({
+    title: '加载中...' });
+
+
+  wx.cloud.callFunction({
+    name: 'login' }).
+  then(function (res) {
+    console.log('login_info', res);
+    // commit(types.SET_USERINFO, null)
+
+  }).catch(function (err) {
+    console.log('login_error', err);
+    commit(types.SET_USERINFO, null);
+  }).
+  finally(function () {
+    wx.hideLoading();
+  });
+
+};exports.dispatchLogin = dispatchLogin;
 
 /***/ }),
 /* 18 */
@@ -10346,7 +10399,7 @@ exports.dispatchNext = dispatchNext;var dispatchPrev = function dispatchPrev(_re
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.SET_MODE = exports.SET_CURRENT_TIME = exports.SET_SONG_URL = exports.SET_SONG_LYRIC = exports.SET_FAVORITE_LIST = exports.SET_CURRENT_INDEX = exports.SET_SEQUENCE_LIST = exports.SET_PALYLIST = exports.SET_PLAYING_STATE = exports.SET_SONG_READY = exports.SET_SHEET_DATA = exports.SET_IS_HIDE = exports.SET_STATUS_BAR_HEIGHT = void 0;var SET_STATUS_BAR_HEIGHT = 'SET_STATUS_BAR_HEIGHT';exports.SET_STATUS_BAR_HEIGHT = SET_STATUS_BAR_HEIGHT;
+Object.defineProperty(exports, "__esModule", { value: true });exports.SET_USERINFO = exports.SET_MODE = exports.SET_CURRENT_TIME = exports.SET_SONG_URL = exports.SET_SONG_LYRIC = exports.SET_FAVORITE_LIST = exports.SET_CURRENT_INDEX = exports.SET_SEQUENCE_LIST = exports.SET_PALYLIST = exports.SET_PLAYING_STATE = exports.SET_SONG_READY = exports.SET_SHEET_DATA = exports.SET_IS_HIDE = exports.SET_STATUS_BAR_HEIGHT = void 0;var SET_STATUS_BAR_HEIGHT = 'SET_STATUS_BAR_HEIGHT';exports.SET_STATUS_BAR_HEIGHT = SET_STATUS_BAR_HEIGHT;
 
 var SET_IS_HIDE = 'SET_IS_HIDE';exports.SET_IS_HIDE = SET_IS_HIDE;
 
@@ -10370,7 +10423,11 @@ var SET_SONG_URL = 'SET_SONG_URL';exports.SET_SONG_URL = SET_SONG_URL;
 
 var SET_CURRENT_TIME = 'SET_CURRENT_TIME';exports.SET_CURRENT_TIME = SET_CURRENT_TIME;
 
-var SET_MODE = 'SET_MODE';exports.SET_MODE = SET_MODE;
+var SET_MODE = 'SET_MODE';
+
+
+/* 用户 */exports.SET_MODE = SET_MODE;
+var SET_USERINFO = 'SET_USERINFO';exports.SET_USERINFO = SET_USERINFO;
 
 /***/ }),
 /* 19 */
@@ -12663,7 +12720,7 @@ module.exports = function isAxiosError(payload) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.currentTime = exports.currentSong = exports.audio = exports.currentIndex = exports.favoriteList = exports.sequenceList = exports.playList = exports.mode = exports.playing = exports.songReady = exports.sheetData = exports.isHide = exports.navBarHeight = exports.statusBarHeight = void 0;var statusBarHeight = function statusBarHeight(state) {return state.statusBarHeight;};exports.statusBarHeight = statusBarHeight;
+Object.defineProperty(exports, "__esModule", { value: true });exports.userInfo = exports.currentTime = exports.currentSong = exports.audio = exports.currentIndex = exports.favoriteList = exports.sequenceList = exports.playList = exports.mode = exports.playing = exports.songReady = exports.sheetData = exports.isHide = exports.navBarHeight = exports.statusBarHeight = void 0;var statusBarHeight = function statusBarHeight(state) {return state.statusBarHeight;};exports.statusBarHeight = statusBarHeight;
 
 var navBarHeight = function navBarHeight(state) {return state.statusBarHeight + 46;};exports.navBarHeight = navBarHeight;
 
@@ -12692,6 +12749,8 @@ var currentSong = function currentSong(state) {
 };exports.currentSong = currentSong;
 
 var currentTime = function currentTime(state) {return state.currentTime;};exports.currentTime = currentTime;
+
+var userInfo = function userInfo(state) {return state.userInfo;};exports.userInfo = userInfo;
 
 /***/ }),
 /* 50 */
@@ -12739,7 +12798,10 @@ var state = {
   audio: wx.getBackgroundAudioManager(),
 
   // 播放时间
-  currentTime: 0 };var _default =
+  currentTime: 0,
+
+  // userInfo
+  userInfo: null };var _default =
 
 
 state;exports.default = _default;
@@ -12824,6 +12886,9 @@ types.SET_CURRENT_TIME, function (state, time) {
 }), _defineProperty(_mututations,
 types.SET_MODE, function (state, mode) {
   state.mode = mode;
+}), _defineProperty(_mututations,
+types.SET_USERINFO, function (state, userInfo) {
+  state.userInfo = userInfo;
 }), _mututations);var _default =
 
 

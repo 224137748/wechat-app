@@ -45,6 +45,9 @@ const mututations = {
 	},
 	[types.SET_MODE](state, mode) {
 		state.mode = mode
+	},
+	[types.SET_USERINFO](state, userInfo) {
+		state.userInfo = userInfo
 	}
 }
 

@@ -24,3 +24,7 @@ export const SET_CURRENT_TIME = 'SET_CURRENT_TIME'
 
 export const SET_MODE = 'SET_MODE'
 
+
+/* 用户 */
+export const SET_USERINFO = 'SET_USERINFO'
+

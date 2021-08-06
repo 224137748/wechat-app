@@ -16,15 +16,19 @@
     "backgroundColor": "#F8F8F8"
   },
   "tabBar": {
-    "color": "#d7d7d7",
+    "color": "#bfbfbf",
     "selectedColor": "#6b8cf1",
     "list": [
       {
         "text": "首页",
+        "iconPath": "./static/home.png",
+        "selectedIconPath": "./static/home_selected.png",
         "pagePath": "pages/index/index"
       },
       {
         "text": "我的",
+        "iconPath": "./static/user.png",
+        "selectedIconPath": "./static/user_selected.png",
         "pagePath": "pages/user/user"
       }
     ]

@@ -219,3 +219,56 @@ export const dispatchPrev = ({state, commit, dispatch}) => {
 		}
 	}
 }
+
+/* ==================  用户  =========================== */
+
+export const dispatchGetUserInfo = ({commit, state}) => {
+	if (state.userInfo) return
+	
+	const getUserInfo = () => {
+		wx.getUserProfile({
+			success(res) {
+				commit(types.SET_USERINFO, res.userInfo)
+			}
+		})
+	}
+	
+	// 查看是否有权限
+	wx.getSetting({
+		success(res) {
+			console.log(res)
+			if (res.authSetting['scope.userInfo']) {
+				getUserInfo()
+			} else {
+				wx.authorize({
+					scope: 'scope.userInfo',
+					success() {
+						getUserInfo()
+					}
+				})
+			}
+	
+		}
+	})
+}
+
+export const dispatchLogin = ({commit, state}) => {
+	wx.showLoading({
+		title:'加载中...'
+	})
+	
+	wx.cloud.callFunction({
+		name: 'login'
+	}).then(res => {
+		console.log('login_info', res)
+		// commit(types.SET_USERINFO, null)
+		
+	}).catch(err => {
+		console.log('login_error', err)
+		commit(types.SET_USERINFO, null)
+	})
+	.finally(() => {
+		wx.hideLoading()
+	});
+	
+}

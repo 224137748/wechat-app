@@ -27,3 +27,5 @@ export const currentSong = (state) => {
 }
 
 export const currentTime = state => state.currentTime
+
+export const userInfo = state => state.userInfo

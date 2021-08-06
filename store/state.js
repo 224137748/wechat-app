@@ -35,7 +35,10 @@ const state = {
 	audio: wx.getBackgroundAudioManager(),
 	
 	// 播放时间
-	currentTime: 0
+	currentTime: 0,
+	
+	// userInfo
+	userInfo: null
 }
 
 export default state

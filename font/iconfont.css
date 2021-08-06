@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2682748 */
-  src: url('/font/iconfont.woff2?t=1627916439836') format('woff2'),
-       url('/font/iconfont.woff?t=1627916439836') format('woff'),
-       url('/font/iconfont.ttf?t=1627916439836') format('truetype');
+  src: url('/font/iconfont.woff2?t=1628263865766') format('woff2'),
+       url('/font/iconfont.woff?t=1628263865766') format('woff'),
+       url('/font/iconfont.ttf?t=1628263865766') format('truetype');
 }
 
 .iconfont {
@@ -13,16 +13,44 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-fadeback:before {
+  content: "\e616";
+}
+
+.icon-errors:before {
+  content: "\e652";
+}
+
+.icon-major:before {
+  content: "\e61c";
+}
+
+.icon-arrow:before {
+  content: "\e629";
+}
+
+.icon-school:before {
+  content: "\e634";
+}
+
+.icon-collection:before {
+  content: "\e656";
+}
+
+.icon-user:before {
+  content: "\e636";
+}
+
+.icon-zhuye:before {
+  content: "\e83a";
+}
+
 .icon-keben:before {
   content: "\e604";
 }
 
 .icon-record:before {
   content: "\e628";
-}
-
-.icon-collection:before {
-  content: "\e60c";
 }
 
 .icon-fanhui:before {

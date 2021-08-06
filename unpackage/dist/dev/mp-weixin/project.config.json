@@ -10,23 +10,20 @@
   "libVersion": "",
   "appid": "wxc2479fca3c41b6c7",
   "projectname": "wechat-app",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
   "condition": {
     "search": {
-      "current": -1,
       "list": []
     },
     "conversation": {
-      "current": -1,
       "list": []
     },
     "game": {
-      "current": -1,
       "list": []
     },
     "miniprogram": {
-      "current": -1,
       "list": []
     }
-  },
-  "cloudfunctionRoot": "cloudfunctions/"
+  }
 }
