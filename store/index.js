@@ -5,15 +5,19 @@ import * as getters from './getters.js'
 import state from './state.js'
 import mutations from './mutations.js'
 import creatLogger from 'vuex/dist/logger'
+import answer from './modules/answer.js'
 
 Vue.use(Vuex)
 
 const debug = process.env.NODE_ENV !== 'production'
 export default new Vuex.Store({
-  actions,
-  getters,
-  state,
-  mutations,
-  strict: debug,
-  plugins: debug ? [creatLogger()] : []
+	modules: {
+		answer
+	},
+	actions,
+	getters,
+	state,
+	mutations,
+	strict: debug,
+	plugins: debug ? [creatLogger()] : []
 })

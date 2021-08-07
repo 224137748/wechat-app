@@ -1,13 +1,10 @@
 <template>
 	<view class="computer-page">
 		<view class="top-wrap">
-
-			<view class="header" :style="{ marginTop: `${statusBarHeight}px` }">
-				<view class="back  " @click="handleBack">
-					<view class="iconfont  icon-fanhui"></view>
-				</view>
-				<view class="title">章节列表</view>
-			</view>
+			<top-bar>
+				章节列表
+			</top-bar>
+			
 			<!-- 题目类型 -->
 			<view class="type-list">
 				<view class="type-item" :class="{active:activeType === 'all'}" @click="handleCheckTypes('all')">
@@ -37,7 +34,8 @@
 		<!-- 题目类型 -->
 		<scroll class="section-wrap">
 			<view class="section-list" v-if="sectionList.length">
-				<view class="section-item" v-for="(item,index) in sectionList" :key="index">
+				<view @click="handleSelectSection(item)" class="section-item" v-for="(item,index) in sectionList"
+					:key="index">
 					<view class="section-info">
 						<view class="section-title">{{item.title}}</view>
 						<view class="section-desc">
@@ -60,11 +58,14 @@
 
 <script>
 	import {
-		mapGetters
+		mapGetters,
+		mapMutations
 	} from 'vuex'
 	import {
 		COMPUTER_SECTION_TYPES
 	} from '../../config/index.js'
+	import TopBar from '../../components/top-bar.vue'
+
 	export default {
 		name: 'computer-page',
 		data() {
@@ -73,12 +74,14 @@
 				activeType: 'all'
 			}
 		},
+		components: {
+			TopBar
+		},
 		created() {
 			this.getData()
 		},
 		computed: {
 			sectionList() {
-				console.log('===', this.questionList)
 				if (!this.questionList.length) return []
 				const sectionMap = new Map()
 				this.questionList.forEach(item => {
@@ -97,10 +100,6 @@
 					sectionMap.set(section_type, section)
 				})
 				return [...sectionMap.entries()].sort((a, b) => a[0] - b[0]).map(item => {
-
-
-
-
 					// 正确数
 					let correctCount = 0
 					let errorCount = 0
@@ -149,16 +148,38 @@
 					}
 				} = res
 				this.questionList = data || []
-				setTimeout(() => {
-					console.log(this.sectionList)
-				}, 1000)
 			},
 			handleBack() {
 				wx.navigateBack();
 			},
 			handleCheckTypes(type) {
 				this.activeType = type
-			}
+			},
+			handleSelectSection(section) {
+				if (!section.list.length) {
+					return wx.showToast({
+						title: '抱歉，该章节没有题目可练习',
+						mask: true
+					})
+				}
+				
+				this.setAnswerData([{
+						key: 'titleType',
+						value: 'computer'
+					},
+					{
+						key: 'questionList',
+						value: section.list
+					}
+
+				])
+				wx.navigateTo({
+					url: '../answer/answer'
+				})
+			},
+			...mapMutations('answer', {
+				'setAnswerData': 'setDataHelper'
+			})
 		}
 	}
 </script>
@@ -175,39 +196,10 @@
 
 	.top-wrap {
 		overflow: hidden;
-		background: linear-gradient(#fff, #f5f7f8);
+		/* background: linear-gradient(#fff, #f5f7f8); */
+		background-color: #fff;
 	}
 
-	.header {
-		position: relative;
-	}
-
-	.header .back {
-		position: absolute;
-		top: 6rpx;
-		left: 12rpx;
-		z-index: 50;
-	}
-
-	.header .icon-fanhui {
-		display: block;
-		width: 30rpx;
-		height: 30rpx;
-		padding: 9px;
-		font-size: 32rpx;
-		color: #000;
-	}
-
-	.header .title {
-		width: 50%;
-		margin: 0 auto;
-		line-height: 80rpx;
-		text-align: center;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		font-size: 36rpx;
-	}
 
 	.type-list {
 		display: flex;

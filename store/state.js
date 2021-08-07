@@ -1,6 +1,8 @@
 import {playMode} from '../config/index.js'
 import {loadFavorite} from '../config/cache.js'
+
 const state = {
+	
 	// 顶部statusBarHeight
 	statusBarHeight: 0,
 	

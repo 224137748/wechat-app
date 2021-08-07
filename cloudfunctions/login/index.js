@@ -14,19 +14,19 @@ exports.main = async (event, context) => {
 		OPENID
 	} = cloud.getWXContext()
 	const {
-		baseInfo = null
+		baseInfo = {}
 	} = event
 
 	return new Promise(async (resolve, reject) => {
 		try {
 			const res = await users.doc(OPENID).get()
 			resolve({
-				userInfo: res.data
+				data: res.data
 			})
 		} catch (err) {
 			if (err.errCode !== -1) {
 				resolve({
-					userInfo: null
+					data: null
 				})
 				return 
 			}
@@ -47,7 +47,7 @@ exports.main = async (event, context) => {
 					data: user
 				})
 				resolve({
-					userInfo: user
+					data: user
 				})
 			} catch (error2) {
 				reject({

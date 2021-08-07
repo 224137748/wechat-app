@@ -1,4 +1,5 @@
 import * as types from './mutation-types.js'
+import { isEmpty } from 'lodash-es'
 import {
 	createSong
 } from '../utils/song.js';
@@ -222,53 +223,49 @@ export const dispatchPrev = ({state, commit, dispatch}) => {
 
 /* ==================  用户  =========================== */
 
-export const dispatchGetUserInfo = ({commit, state}) => {
-	if (state.userInfo) return
-	
-	const getUserInfo = () => {
-		wx.getUserProfile({
-			success(res) {
-				commit(types.SET_USERINFO, res.userInfo)
-			}
-		})
-	}
-	
-	// 查看是否有权限
-	wx.getSetting({
-		success(res) {
-			console.log(res)
-			if (res.authSetting['scope.userInfo']) {
-				getUserInfo()
-			} else {
-				wx.authorize({
-					scope: 'scope.userInfo',
-					success() {
-						getUserInfo()
-					}
-				})
-			}
-	
-		}
-	})
-}
-
-export const dispatchLogin = ({commit, state}) => {
+export const dispatchUpdateUserInfo = ({commit, state}, {baseInfo}) => {
+	if (!state.userInfo || isEmpty(baseInfo)) return
 	wx.showLoading({
 		title:'加载中...'
 	})
+	wx.cloud.callFunction({
+		name: 'updateUserinfo',
+		data: {
+			baseInfo
+		}
+	})
+	.then((res) => {
+		commit(types.SET_USERINFO, {...state.userInfo, baseInfo})
+	})
+	.catch(err=> {
+		console.log('update_fail', err)
+	})
+	.finally(() => {
+		wx.hideLoading()
+	})
 	
+}
+
+export const dispatchLogin = ({commit, state}) => {
+	// wx.showLoading({
+	// 	title:'加载中...'
+	// })
 	wx.cloud.callFunction({
 		name: 'login'
 	}).then(res => {
-		console.log('login_info', res)
-		// commit(types.SET_USERINFO, null)
+		const userInfo = res.result.data
+		console.log('login_info', userInfo)
+		if (isEmpty(userInfo.baseInfo)) {
+			userInfo.baseInfo = null
+		}
+		commit(types.SET_USERINFO, userInfo || null)
 		
 	}).catch(err => {
 		console.log('login_error', err)
 		commit(types.SET_USERINFO, null)
 	})
 	.finally(() => {
-		wx.hideLoading()
+		// wx.hideLoading()
 	});
 	
 }

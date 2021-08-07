@@ -2,7 +2,7 @@
 	<view class="user-page">
 		<view class="header">
 			<view class="avatar-wrap">
-				<image class="avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" mode=""></image>
+				<image class="avatar" v-if="hasBaseInfo" :src="userInfo.baseInfo.avatarUrl" mode=""></image>
 				<authorize-wrap v-else>
 					<view class="login-btn">登陆</view>
 				</authorize-wrap>
@@ -47,10 +47,11 @@
 					<view class="line-tit">专业</view>
 					<view class="right iconfont icon-arrow"></view>
 				</view>
-				<view class="line">
+				<view class="line" >
 					<view class="iconfont icon-fadeback"></view>
 					<view class="line-tit">意见反馈</view>
 					<view class="right iconfont icon-arrow"></view>
+					<button class="feedback-btn" type="default" open-type="feedback">hahha</button>
 				</view>
 			</authorize-wrap>
 		</view>
@@ -74,17 +75,35 @@
 		},
 		created() {
 
-			const nickname = this.userInfo?.nickName || 'uni-app'
-			wx.setNavigationBarTitle({
-				title: nickname
-			})
-			console.log(this.userInfo)
+			this.setNavTitle()
 		},
 		computed: {
+			hasBaseInfo() {
+				if (this.userInfo ) {
+					return this.userInfo.baseInfo != null
+				}
+				return false
+			},
 			...mapGetters(['userInfo'])
 		},
 		methods: {
-
+			setNavTitle() {
+				if (this.hasBaseInfo) {
+					const nickname = this.userInfo.baseInfo.nickName || 'uni-app'
+					wx.setNavigationBarTitle({
+						title: nickname
+					})
+				}
+			},
+		},
+		watch: {
+			hasBaseInfo(newVal) {
+				if (newVal) {
+					wx.setNavigationBarTitle({
+						title:this.userInfo.baseInfo.nickName || 'uni-app'
+					})
+				}
+			}
 		}
 	}
 </script>
@@ -158,6 +177,7 @@
 		box-sizing: border-box;
 	}
 	.line {
+		position: relative;
 		display: flex;
 		align-items: center;
 		width: 656rpx;
@@ -182,5 +202,13 @@
 	}
 	.icon-arrow {
 		color: #9f9e9e;
+	}
+	.feedback-btn {
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		opacity: 0;
 	}
 </style>
