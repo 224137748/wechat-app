@@ -178,7 +178,7 @@
 				})
 			},
 			...mapMutations('answer', {
-				'setAnswerData': 'setDataHelper'
+				'setAnswerData': 'setAnswerState'
 			})
 		}
 	}

@@ -12,11 +12,36 @@
 			</view>
 		</view>
 
-		<scroll class="question-container">
-			<keep-alive>
-				<choice v-if="questionType === 'Choice'" :index="activeIndex + 1" :question="currentQuestion" />
-			</keep-alive>
-		</scroll>
+		<view class="question-container-wrap" @touchstart="handleTouchStart" @touchmove="handleTouchMove"
+			@touchend="handleTouchEnd">
+			<view class="question-container">
+				<keep-alive>
+					<choice :index="activeIndex + 1" :question="currentQuestion"
+						@selected="showSubmitBtn = 1" @unSelected="showSubmitBtn=0" />
+					<!-- <choice v-if="questionType === 'Choice'" :index="activeIndex + 1" :question="currentQuestion"
+							@selected="showSubmitBtn = 1" @unSelected="showSubmitBtn=0" />
+							<choice v-if="questionType === 'Choice'" :index="activeIndex + 1" :question="currentQuestion"
+								@selected="showSubmitBtn = 1" @unSelected="showSubmitBtn=0" />
+								<choice v-if="questionType === 'Choice'" :index="activeIndex + 1" :question="currentQuestion"
+									@selected="showSubmitBtn = 1" @unSelected="showSubmitBtn=0" />
+									<choice v-if="questionType === 'Choice'" :index="activeIndex + 1" :question="currentQuestion"
+										@selected="showSubmitBtn = 1" @unSelected="showSubmitBtn=0" /> -->
+				</keep-alive>
+			</view>
+		</view>
+
+		<view class="submit-btn" :class="submitBtnCls" @click="handleSubmit">
+			<button>
+				提交
+			</button>
+		</view>
+
+		<!-- 提示弹窗 -->
+
+		<modal-wrap v-if="showNoteFlag" title="提示" @close="handleHideModal">
+			<rich-text :nodes="noteText"></rich-text>
+			
+		</modal-wrap>
 
 		<view class="footer-bar">
 			<view class="ac-item">
@@ -47,7 +72,8 @@
 
 <script>
 	import {
-		mapGetters
+		mapGetters,
+		mapMutations
 	} from 'vuex'
 	import {
 		ANSWER_TITLE_TYPES,
@@ -56,24 +82,31 @@
 	} from '../../config/index.js'
 	import TopBar from '../../components/top-bar.vue'
 	import Choice from '../../components/choice.vue'
+	import ModalWrap from '../../components/modal-wrap.vue'
 	export default {
 		name: 'answer',
 		data() {
 			return {
 				type: 'Choice',
-				activeIndex: 0
+				activeIndex: 0,
+				showSubmitBtn: -1,
+				touch: {
+					isActive: false,
+					x: 0
+				}
 			}
 		},
 
 		components: {
 			TopBar,
-			Choice
+			Choice,
+			ModalWrap
 		},
 		filters: {
 			getTypeText(value) {
 				switch (value) {
 					case 'Choice':
-						return '【选择题】'
+						return '【单选题】'
 					case 'MultipleChoice':
 						return '【多选题】'
 					case 'FillIn':
@@ -123,17 +156,77 @@
 				}
 				return ''
 			},
-			...mapGetters('answer', ['titleType', 'questionList'])
+
+			// 展示提交按钮
+			submitBtnCls() {
+				switch (this.showSubmitBtn) {
+					case 0:
+						return 'hide'
+					case 1:
+						return 'show'
+					default:
+						return ''
+				}
+			},
+			
+			// 提示文案
+			noteText() {
+				if (this.currentQuestion) {
+					const {answers, keys, question} = this.currentQuestion
+					const ansArr =  keys.map(key => {
+						const ans = answers.find(item => item.value === key)
+						return ans ? `<span class="ans-item" style="color: #dd524d;">${ans.label}</span>`: ''
+					}).filter(item => !!item)
+					return question.replace(/\_*/g, (match) => {
+						if (match) {
+							return ansArr.join('、')
+						}
+						return ''
+					})
+				}
+			},
+			...mapGetters('answer', ['titleType', 'questionList', 'checkedList', 'showNoteFlag'])
 		},
 		created() {},
 		mounted() {
 			console.log(this.questionList)
 		},
-		methods: {}
+		onUnload() {
+			this.setDefaultState()
+		},
+		methods: {
+			handleTouchStart(event) {
+				if (!this.touch.isActive) {
+					this.touch = {
+						isActive: true,
+						x: event.touches[0].pageX
+					}
+				}
+			},
+			handleTouchMove() {
+
+			},
+			handleTouchEnd() {
+				if (this.touch.isActive) {
+					this.touch.isActive = false
+				}
+			},
+
+			// 提交答案
+			handleSubmit() {
+				if (!this.checkedList.length) return
+			},
+			
+			// 关闭提示弹窗
+			handleHideModal() {
+				this.setShowNoteFlag(false)
+			},
+			...mapMutations('answer', ['setShowNoteFlag','setDefaultState'])
+		}
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	.answer-page {
 		position: fixed;
 		left: 0;
@@ -178,14 +271,16 @@
 		margin-left: 12rpx;
 	}
 
-	.question-container {
+	.question-container-wrap {
 		position: absolute;
 		top: 204rpx;
 		left: 0;
 		right: 0;
 		bottom: 100rpx;
 		background-color: pink;
+		overflow: auto;
 	}
+
 
 	.footer-bar {
 		display: flex;
@@ -196,18 +291,112 @@
 		bottom: 0;
 		height: 100rpx;
 	}
+
 	.ac-item {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 	}
-	.ac-item .iconfont  {
+
+	.ac-item .iconfont {
 		display: inline-block;
 		font-size: 40rpx;
 		height: 42rpx;
 		margin-top: 12rpx;
 	}
+
 	.ac-item .ac-text {
 		font-size: 28rpx;
+	}
+
+	/* 提交按钮 */
+	.submit-btn {
+		position: fixed;
+		right: -36px;
+		bottom: 180rpx;
+		animation-duration: 1s;
+		animation-fill-mode: both;
+		transform-origin: center bottom;
+		transform: translate3d(100%, 0, 0);
+
+		&.show {
+			animation-name: bounceInRight;
+		}
+
+		&.hide {
+			animation-name: bounceOutRight;
+		}
+	}
+
+	.submit-btn button {
+		background-color: $uni-text-theme-color;
+		color: #FFFFFF;
+		font-size: 32rpx;
+		height: 56rpx;
+		line-height: 56rpx;
+		border-top-left-radius: 28rpx;
+		border-bottom-left-radius: 28rpx;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+		padding-right: 50px;
+
+		&.button-hover {
+			opacity: 0.8;
+		}
+	}
+
+	rich-text .ans-item {
+		color: $uni-color-error;
+	}
+
+	@keyframes bounceInRight {
+
+		0%,
+		60%,
+		75%,
+		90%,
+		to {
+			-webkit-animation-timing-function: cubic-bezier(.215, .61, .355, 1);
+			animation-timing-function: cubic-bezier(.215, .61, .355, 1)
+		}
+
+		0% {
+			opacity: 0;
+			-webkit-transform: translate3d(3000px, 0, 0) scaleX(3);
+			transform: translate3d(1000px, 0, 0) scaleX(3)
+		}
+
+		60% {
+			opacity: 1;
+			-webkit-transform: translate3d(-25px, 0, 0) scaleX(1);
+			transform: translate3d(-25px, 0, 0) scaleX(1)
+		}
+
+		75% {
+			-webkit-transform: translate3d(10px, 0, 0) scaleX(.98);
+			transform: translate3d(10px, 0, 0) scaleX(.98)
+		}
+
+		90% {
+			-webkit-transform: translate3d(-5px, 0, 0) scaleX(.995);
+			transform: translate3d(-5px, 0, 0) scaleX(.995)
+		}
+
+		to {
+			-webkit-transform: translateZ(0);
+			transform: translateZ(0)
+		}
+	}
+
+	@keyframes bounceOutRight {
+		0% {
+			opacity: 1;
+			transform: translate3d(0px, 0, 0);
+		}
+
+		to {
+			opacity: 0;
+			transform: translate3d(400rpx, 0, 0);
+		}
 	}
 </style>

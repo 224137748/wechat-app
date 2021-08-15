@@ -6,46 +6,35 @@
 			</view>
 
 			<view class="answer-list">
-				<label class="label" v-for="(item) in question.answers" :key="item.value">
+				<label class="label" :class="isChecked(item.value) ? 'active': ''" v-for="(item) in question.answers"
+					:key="item.value" @click="handleSelect(item.value)">
 					<view class="label-hd">{{item.value}}.</view>
 					<view class="label-bd">{{item.label}}</view>
 				</label>
 			</view>
+			
 		</view>
+		
+		<view class="note-btn" @click="handleShowNoteModal">
+			<text class="iconfont icon-note"></text>
+			<text>查看提示</text>
+		</view>
+		
+		
+		
+		
 	</view>
 </template>
 
 <script>
+	import {answerMixin} from '../common/js/mixin.js'
 	export default {
 		name: "choice",
-		props: {
-			index: {
-				type: Number,
-				default: 0
-			},
-			question: {
-				type: Object,
-				default: () => (null)
-			}
-		},
-		data() {
-			return {
-				checkedList: []
-			};
-		},
-		methods: {
-			checkboxChange(e) {
-				console.log(e)
-			},
-			isChecked(val) {
-				console.log('val ', val)
-				return this.checkedList.includes(val)
-			}
-		}
+		mixins:[answerMixin]
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	.choice-component {
 		width: 680rpx;
 		margin: 20rpx auto;
@@ -60,6 +49,7 @@
 	.question-title {
 		margin-bottom: 20px;
 	}
+
 	.label {
 		display: flex;
 		align-items: center;
@@ -74,13 +64,26 @@
 		color: #3c4955;
 		transition: opacity .3s ease;
 	}
+
 	.label:not(:last-child) {
 		margin-bottom: 24rpx;
 	}
-	.label:active {
+
+	.label.active {
 		background-color: #f7f9fb;
+		border: 2rpx solid $uni-text-theme-color;
+		color: $uni-text-theme-color;
 	}
+
 	.label-hd {
 		margin-right: 18rpx;
+	}
+	
+	.note-btn{
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		color: $uni-text-theme-color;
+		margin-top: 40rpx;
 	}
 </style>
