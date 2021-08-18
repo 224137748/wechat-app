@@ -73,7 +73,8 @@
 <script>
 	import {
 		mapGetters,
-		mapMutations
+		mapMutations,
+		mapActions
 	} from 'vuex'
 	import {
 		ANSWER_TITLE_TYPES,
@@ -88,7 +89,6 @@
 		data() {
 			return {
 				type: 'Choice',
-				activeIndex: 0,
 				showSubmitBtn: -1,
 				touch: {
 					isActive: false,
@@ -126,13 +126,7 @@
 				return '答题'
 			},
 
-			// 当前题目
-			currentQuestion() {
-				const len = this.questionList.length
-				if (len && this.activeIndex < len) {
-					return this.questionList[this.activeIndex]
-				}
-			},
+			
 
 			// 题目类型
 			questionType() {
@@ -185,7 +179,7 @@
 					})
 				}
 			},
-			...mapGetters('answer', ['titleType', 'questionList', 'checkedList', 'showNoteFlag'])
+			...mapGetters('answer', ['titleType', 'questionList', 'checkedList', 'showNoteFlag', 'activeIndex', 'currentQuestion'])
 		},
 		created() {},
 		mounted() {
@@ -215,13 +209,15 @@
 			// 提交答案
 			handleSubmit() {
 				if (!this.checkedList.length) return
+				this.dispatchCheckAnswer()
 			},
 			
 			// 关闭提示弹窗
 			handleHideModal() {
 				this.setShowNoteFlag(false)
 			},
-			...mapMutations('answer', ['setShowNoteFlag','setDefaultState'])
+			...mapMutations('answer', ['setShowNoteFlag','setDefaultState']),
+			...mapActions('answer', ['dispatchCheckAnswer'])
 		}
 	}
 </script>

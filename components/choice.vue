@@ -17,11 +17,8 @@
 		
 		<view class="note-btn" @click="handleShowNoteModal">
 			<text class="iconfont icon-note"></text>
-			<text>查看提示</text>
+			<text >查看提示</text>
 		</view>
-		
-		
-		
 		
 	</view>
 </template>
