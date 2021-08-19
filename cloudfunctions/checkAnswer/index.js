@@ -17,48 +17,30 @@ exports.main = async (event, context) => {
 	} = cloud.getWXContext()
 	const {
 		id,
-		answer
+		status
 	} = event
-	const {data: {keys,answer_status = []}} = await dbQuestion.doc(id).get()
-
-	// 判断是否回答正确
-	const status = keys.length === answer.length && keys.every(key => answer.includes(key))
-
-	// 查看是否有答题记录
-	const index = answer_status.findIndex(item => item.openId === OPENID)
+	
 	try {
-		if (index !== -1) {
-			// 插入一条记录
-			await dbQuestion.doc(id).update({
-				data: {
-					answer_status: _.push({
-						openId: OPENID,
-						status
-					})
-				}
-			})
-			
-			// 如果答题错误，用户记录一条错误数据
-			if (!status) {
-				const {data: {error_question}} = await dbusers.doc(OPENID).get()
-				
-				await dbusers.doc(OPENID).update({
-					data: {
-						
-					}
-				})
-				
-			}
-		} else {
-			
+		const res = await dbQuestion.where({
+			answer_status: {openId: OPENID}
+		})
+		return {
+			data: res.data,
+			errno: 0,
+			msg: 'success'
 		}
-		
-	} catch(error) {
-		
-	}
+	} catch(err => {
+		return {
+			error: err,
+			errno: 500,
+			msg: err
+		}
+	})
+
 
 	return {
-		id,
-		answer
+		data: {},
+		errno: 0,
+		msg: 'success'
 	}
 }

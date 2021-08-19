@@ -63,19 +63,20 @@ const answer = {
 	actions: {
 		dispatchCheckAnswer({
 			commit,
-			state
+			getters
 		}) {
 			wx.showLoading({
 				title: '加载中...',
 				mask: true
 			})
-			const {currentQuestion, checkedList} = state
-			
-			wx.cloud.callFunction()({
+			const { checkedList, currentQuestion} = getters
+			const {keys} = currentQuestion
+			const status = keys.length === checkedList.length && keys.every(key => checkedList.includes(key))
+			wx.cloud.callFunction({
 				name: 'checkAnswer',
 				data: {
 					id: currentQuestion._id,
-					answer: checkedList
+					status
 				}
 			})
 			.then(res => {
