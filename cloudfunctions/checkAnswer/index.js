@@ -12,13 +12,8 @@ const dbusers = db.collection('users')
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-	const {
-		OPENID
-	} = cloud.getWXContext()
-	const {
-		id,
-		status
-	} = event
+	const {OPENID} = cloud.getWXContext()
+	const {id,status} = event
 	
 	try {
 		const res = await dbQuestion.where({

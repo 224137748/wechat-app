@@ -8,7 +8,7 @@
     /* 5+App特有相关 */
     "app-plus" : {
         "usingComponents" : true,
-		"nvueStyleCompiler" : "uni-app",
+        "nvueStyleCompiler" : "uni-app",
         "compilerVersion" : 3,
         "splashscreen" : {
             "alwaysShowBeforeRender" : true,
@@ -51,12 +51,12 @@
     /* 小程序特有相关 */
     "mp-weixin" : {
         "appid" : "wxc2479fca3c41b6c7",
-		"cloudfunctionRoot": "cloudfunctions/",
+        "cloudfunctionRoot" : "cloudfunctions/",
         "setting" : {
             "urlCheck" : false
         },
         "usingComponents" : true,
-		"requiredBackgroundModes": ["audio"]
+        "requiredBackgroundModes" : [ "audio" ]
     },
     "mp-alipay" : {
         "usingComponents" : true
@@ -67,7 +67,8 @@
     "mp-toutiao" : {
         "usingComponents" : true
     },
-    "uniStatistics": {  
-        "enable": false
-    }
+    "uniStatistics" : {
+        "enable" : false
+    },
+    "vueVersion" : "3"
 }
