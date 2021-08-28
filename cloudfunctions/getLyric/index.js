@@ -9,7 +9,7 @@ const instance = axios.create({
 
 cloud.init({
   // API 调用都保持和云函数当前所在环境一致
-  env: 'dev-2g6vkydrb65a226e',
+  env: 'dev-7guaxwhaeba52343',
 })
 
 // 云函数入口函数

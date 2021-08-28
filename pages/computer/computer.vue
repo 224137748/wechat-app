@@ -4,7 +4,7 @@
 			<top-bar>
 				章节列表
 			</top-bar>
-			
+
 			<!-- 题目类型 -->
 			<view class="type-list">
 				<view class="type-item" :class="{active:activeType === 'all'}" @click="handleCheckTypes('all')">
@@ -26,7 +26,7 @@
 			<view class="summary-wrap">
 				<view class="sub-tit">全部题目</view>
 				<view class="dot"></view>
-				<view>共 {{questionList.length || 0}} 题</view>
+				<view>共 {{questionCount}} 题</view>
 			</view>
 		</view>
 
@@ -39,7 +39,7 @@
 					<view class="section-info">
 						<view class="section-title">{{item.title}}</view>
 						<view class="section-desc">
-							<view class="rate-info">正确率{{item.correctRate || '0%'}}</view>
+							<view class="rate-info">正确率{{item.correctRate}}</view>
 							<view class="statis-info">
 								做题数
 								<text class="correct-status">{{item.correctCount ||0}}</text>/
@@ -81,54 +81,40 @@
 			this.getData()
 		},
 		computed: {
+			questionCount() {
+				if (!this.questionList.length) return 0
+				return this.questionList.reduce((acc, cur) => acc + cur.list.length, 0)
+			},
 			sectionList() {
 				if (!this.questionList.length) return []
-				const sectionMap = new Map()
-				this.questionList.forEach(item => {
+				return this.questionList.map(item => {
 					const {
-						section_type
+						_id,
+						list
 					} = item
-					const sectionTitle = COMPUTER_SECTION_TYPES[section_type] || '其他'
-					const section = sectionMap.get(section_type) || {}
-					if (!section.id) {
-						section.list = [item]
-						section.title = sectionTitle
-						section.id = section_type
-					} else {
-						section.list.push(item)
-					}
-					sectionMap.set(section_type, section)
-				})
-				return [...sectionMap.entries()].sort((a, b) => a[0] - b[0]).map(item => {
+					const sectionTitle = COMPUTER_SECTION_TYPES[_id] || '其他'
 					// 正确数
 					let correctCount = 0
 					let errorCount = 0
-					// 答题总数
-					let totalAnswerCount = 0
-
-					item[1].list.forEach(question => {
-						(question.answer_status || []).forEach(ans => {
-							if (ans.status === 1) {
+					list.forEach(question => {
+						if (question.record) {
+							if (question.record.status === 1) {
 								correctCount++
 							} else {
-								errorCount
+								errorCount++
 							}
-							totalAnswerCount++
-						})
+						}
 					})
-
 					// 计算正确率
-					const correctRate = !!totalAnswerCount ? Number(correctCount / totalAnswerCount * 10).toFixed(
-						1) : 0
-
-					const data = {
+					const correctRate = Number(correctCount / list.length * 100).toFixed(
+						0) + '%'
+					return {
+						...item,
+						title: sectionTitle,
 						correctCount,
 						errorCount,
-						correctRate,
-						...item[1]
+						correctRate
 					}
-
-					return data
 				})
 			},
 			...mapGetters(['statusBarHeight'])
@@ -139,7 +125,10 @@
 					title: '加载中...'
 				})
 				const res = await wx.cloud.callFunction({
-					name: 'getComputerQuestion'
+					name: 'getQuestions',
+					data: {
+						subject_type: 1
+					}
 				})
 				wx.hideLoading()
 				const {
@@ -162,7 +151,7 @@
 						mask: true
 					})
 				}
-				
+
 				this.setAnswerData([{
 						key: 'titleType',
 						value: 'computer'

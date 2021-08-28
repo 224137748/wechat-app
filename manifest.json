@@ -50,7 +50,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wxc2479fca3c41b6c7",
+        "appid" : "wx4cc569313027e537",
         "cloudfunctionRoot" : "cloudfunctions/",
         "setting" : {
             "urlCheck" : false
@@ -70,5 +70,5 @@
     "uniStatistics" : {
         "enable" : false
     },
-    "vueVersion" : "3"
+    "vueVersion" : "2"
 }
