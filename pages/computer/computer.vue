@@ -78,11 +78,14 @@
 			TopBar
 		},
 		created() {
+		},
+		onShow() {
 			this.getData()
 		},
 		computed: {
 			questionCount() {
 				if (!this.questionList.length) return 0
+				console.log(this.questionList)
 				return this.questionList.reduce((acc, cur) => acc + cur.list.length, 0)
 			},
 			sectionList() {

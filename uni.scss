@@ -14,7 +14,7 @@
 
 /* 颜色变量 */
 /* 行为相关颜色 */
-$uni-color-primary: #007aff;
+$uni-color-primary: #6b8cf1;
 $uni-color-success: #4cd964;
 $uni-color-warning: #f0ad4e;
 $uni-color-error: #dd524d;
@@ -74,3 +74,8 @@ $uni-color-subtitle: #555555; // 二级标题颜色
 $uni-font-size-subtitle:36rpx;
 $uni-color-paragraph: #3F536E; // 文章段落颜色
 $uni-font-size-paragraph:30rpx;
+
+// 答题正确
+$uni-correct-color: #59be73;
+
+$uni-error-color: #f64d4d;

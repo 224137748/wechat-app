@@ -5,17 +5,26 @@
 				<text>{{question.question}}</text>
 			</view>
 
-			<view class="answer-list">
+			<view class="answer-list" v-if="!question.record">
 				<label class="label" :class="isChecked(item.value) ? 'active': ''" v-for="(item) in question.answers"
 					:key="item.value" @click="handleSelect(item.value)">
 					<view class="label-hd">{{item.value}}.</view>
 					<view class="label-bd">{{item.label}}</view>
 				</label>
 			</view>
+			<view class="answer-list" v-else>
+				<label class="label" :class="[isCorrect(item.value)]" v-for="(item) in question.answers"
+					:key="item.value" >
+					<view v-if="!isCorrect(item.value)" class="label-hd">{{item.value}}.</view>
+					<view v-if="isCorrect(item.value)=== 'correct'" class="label-hd iconfont icon-answer-correct"></view>
+					<view v-if="isCorrect(item.value)=== 'error'" class="label-hd iconfont icon-answer-error"></view>
+					<view class="label-bd">{{item.label}}</view>
+				</label>
+			</view>
 			
 		</view>
 		
-		<view class="note-btn" @click="handleShowNoteModal">
+		<view v-if="!question.record" class="note-btn" @click="handleShowNoteModal">
 			<text class="iconfont icon-note"></text>
 			<text >查看提示</text>
 		</view>
@@ -60,6 +69,14 @@
 		font-size: 32rpx;
 		color: #3c4955;
 		transition: opacity .3s ease;
+		&.correct {
+			background-color: #eaf9f1;
+			color: #59be73;
+		}
+		&.error {
+			color: #f64d4d;
+			background-color: #fceded;
+		}
 	}
 
 	.label:not(:last-child) {

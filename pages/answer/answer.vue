@@ -16,17 +16,9 @@
 			@touchend="handleTouchEnd">
 			<view class="question-container">
 				<keep-alive>
-					<choice :index="activeIndex + 1" :question="currentQuestion"
-						@selected="showSubmitBtn = 1" @unSelected="showSubmitBtn=0" />
-					<!-- <choice v-if="questionType === 'Choice'" :index="activeIndex + 1" :question="currentQuestion"
-							@selected="showSubmitBtn = 1" @unSelected="showSubmitBtn=0" />
-							<choice v-if="questionType === 'Choice'" :index="activeIndex + 1" :question="currentQuestion"
-								@selected="showSubmitBtn = 1" @unSelected="showSubmitBtn=0" />
-								<choice v-if="questionType === 'Choice'" :index="activeIndex + 1" :question="currentQuestion"
-									@selected="showSubmitBtn = 1" @unSelected="showSubmitBtn=0" />
-									<choice v-if="questionType === 'Choice'" :index="activeIndex + 1" :question="currentQuestion"
-										@selected="showSubmitBtn = 1" @unSelected="showSubmitBtn=0" /> -->
+					<choice :index="activeIndex + 1" :question="currentQuestion"  />
 				</keep-alive>
+				<answer-result v-if="currentQuestion.record" :question="currentQuestion" :answer="checkedList"></answer-result>
 			</view>
 		</view>
 
@@ -37,14 +29,17 @@
 		</view>
 
 		<!-- 提示弹窗 -->
-
-		<modal-wrap v-if="showNoteFlag" title="提示" @close="handleHideModal">
+		<modal-wrap v-if="showNoteFlag" title="提示" @close="handleHideNoteModal">
 			<rich-text :nodes="noteText"></rich-text>
-			
+		</modal-wrap>
+		
+		<!-- 答题卡 -->
+		<modal-wrap v-if="showAnswerSheetFlag" title="答题卡" @close="handleCloseSheetModal">
+			<answer-sheet :questionList="questionList" ></answer-sheet>
 		</modal-wrap>
 
 		<view class="footer-bar">
-			<view class="ac-item">
+			<view class="ac-item " :class="{'disable': activeIndex===0}" @click="prevQuestion">
 				<view class="iconfont icon-left"></view>
 				<view class="ac-text">上一题</view>
 			</view>
@@ -52,15 +47,15 @@
 				<view class="iconfont icon-warning"></view>
 				<view class="ac-text">纠错</view>
 			</view>
-			<view class="ac-item">
+			<view class="ac-item" >
 				<view class="iconfont icon-not-favorite"></view>
 				<view class="ac-text">收藏</view>
 			</view>
-			<view class="ac-item">
+			<view class="ac-item" @click="handleOpenSheetModal">
 				<view class="iconfont icon-card"></view>
 				<view class="ac-text">答题卡</view>
 			</view>
-			<view class="ac-item">
+			<view class="ac-item " :class="{'disable': questionList.length-1===activeIndex}" @click="nextQuestion">
 				<view class="iconfont icon-right"></view>
 				<view class="ac-text">下一题</view>
 			</view>
@@ -72,6 +67,7 @@
 
 <script>
 	import {
+		mapState,
 		mapGetters,
 		mapMutations,
 		mapActions
@@ -83,13 +79,14 @@
 	} from '../../config/index.js'
 	import TopBar from '../../components/top-bar.vue'
 	import Choice from '../../components/choice.vue'
+	import AnswerResult from '../../components/answer-result.vue'
+	import AnswerSheet from '../../components/answer-sheet.vue'
 	import ModalWrap from '../../components/modal-wrap.vue'
 	export default {
 		name: 'answer',
 		data() {
 			return {
 				type: 'Choice',
-				showSubmitBtn: -1,
 				touch: {
 					isActive: false,
 					x: 0
@@ -100,7 +97,9 @@
 		components: {
 			TopBar,
 			Choice,
-			ModalWrap
+			ModalWrap,
+			AnswerResult,
+			AnswerSheet
 		},
 		filters: {
 			getTypeText(value) {
@@ -126,7 +125,7 @@
 				return '答题'
 			},
 
-			
+
 
 			// 题目类型
 			questionType() {
@@ -153,23 +152,20 @@
 
 			// 展示提交按钮
 			submitBtnCls() {
-				switch (this.showSubmitBtn) {
-					case 0:
-						return 'hide'
-					case 1:
-						return 'show'
-					default:
-						return ''
-				}
+				return this.checkedList.length ? 'show': 'hide'
 			},
-			
+
 			// 提示文案
 			noteText() {
 				if (this.currentQuestion) {
-					const {answers, keys, question} = this.currentQuestion
-					const ansArr =  keys.map(key => {
+					const {
+						answers,
+						keys,
+						question
+					} = this.currentQuestion
+					const ansArr = keys.map(key => {
 						const ans = answers.find(item => item.value === key)
-						return ans ? `<span class="ans-item" style="color: #dd524d;">${ans.label}</span>`: ''
+						return ans ? `<span class="ans-item" style="color: #dd524d;">${ans.label}</span>` : ''
 					}).filter(item => !!item)
 					return question.replace(/\_*/g, (match) => {
 						if (match) {
@@ -179,7 +175,9 @@
 					})
 				}
 			},
-			...mapGetters('answer', ['titleType', 'questionList', 'checkedList', 'showNoteFlag', 'activeIndex', 'currentQuestion'])
+			...mapGetters('answer', ['titleType', 'questionList', 'checkedList', 'showNoteFlag', 'activeIndex',
+				'currentQuestion', 'showAnswerSheetFlag'
+			])
 		},
 		created() {},
 		mounted() {
@@ -211,12 +209,22 @@
 				if (!this.checkedList.length) return
 				this.dispatchCheckAnswer()
 			},
-			
+
 			// 关闭提示弹窗
-			handleHideModal() {
+			handleHideNoteModal() {
 				this.setShowNoteFlag(false)
 			},
-			...mapMutations('answer', ['setShowNoteFlag','setDefaultState']),
+			
+			// 展开答题卡modal
+			handleOpenSheetModal() {
+				this.setAnswerState([{key: 'showAnswerSheetFlag', value: true}])
+			},
+			
+			// 关闭答题卡modal
+			handleCloseSheetModal() {
+				this.setAnswerState([{key: 'showAnswerSheetFlag', value: false}])
+			},
+			...mapMutations('answer', ['setShowNoteFlag', 'setDefaultState', 'nextQuestion', 'prevQuestion','setAnswerState']),
 			...mapActions('answer', ['dispatchCheckAnswer'])
 		}
 	}
@@ -273,7 +281,7 @@
 		left: 0;
 		right: 0;
 		bottom: 100rpx;
-		background-color: pink;
+		background-color: #f6f6f6;
 		overflow: auto;
 	}
 
@@ -292,6 +300,10 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		&.disable {
+			pointer-events: none;
+			color: #666;
+		}
 	}
 
 	.ac-item .iconfont {

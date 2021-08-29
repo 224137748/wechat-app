@@ -41,7 +41,9 @@ exports.main = async (event, context) => {
 						.project({
 							_id: 0,
 							question_id: 0,
-							user_id: 0
+							user_id: 0,
+							createTime: 0,
+							updateTime: 0
 						})
 						.done(),
 					as: 'record'
