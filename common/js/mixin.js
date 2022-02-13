@@ -26,6 +26,20 @@ export const answerMixin = {
 		isChecked(val) {
 			return this.checkedList.includes(val)
 		},
+		isCorrect(val) {
+			if (this.question.record) {
+				const keys = this.question.keys
+				const answer = this.question.record.answer
+				if (answer.includes(val)) {
+					if (keys.includes(val)) {
+						return 'correct'
+					} else {
+						return 'error'
+					}
+				}
+				if (keys.includes(val)) return 'correct'
+			}
+		},
 		handleSelect(value) {
 			const index = this.checkedList.indexOf(value)
 			switch (String(this.question.question_type)) {
@@ -63,18 +77,4 @@ export const answerMixin = {
 		},
 		...mapMutations('answer', ['setCheckedList', 'setShowNoteFlag'])
 	},
-	watch: {
-		checkedList(newVal) {
-			if (newVal.length && !this.isEmited) {
-				this.isEmited = true
-				this.$emit('selected')
-				console.log('emit_selected')
-			}
-			if (!newVal.length) {
-				this.isEmited = false
-				this.$emit('unSelected')
-				console.log('emit_unSelected')
-			}
-		}
-	}
 }

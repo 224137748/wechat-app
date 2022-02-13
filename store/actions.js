@@ -58,7 +58,7 @@ export const getSheetData = function({
 			name: 'getSheet'
 		})
 		.then(res => {
-			// console.log('=====', res)
+			console.log('=====', res)
 			// const songIds = res.result.data.playlist.trackIds.map(item => item.id).toString()
 			// console.log(songIds)
 			// request.get('/song/detail', {params: {ids: songIds}}).then(response => {
@@ -66,7 +66,7 @@ export const getSheetData = function({
 			// })
 
 			// let data = res.result.data;
-			let data = res.result.data.playlist.tracks;
+			let data = res.result.data?.playlist ? res.result.data?.playlist?.tracks : res.result.data;
 			
 			// console.log('data', data);
 			

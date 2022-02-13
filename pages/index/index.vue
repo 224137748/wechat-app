@@ -16,10 +16,14 @@
 			<view class="signed" v-else>
 				<view class="sign-text">已签到</view>
 				<view class="sign-desc">学习的路上，和同学一起会更棒哦~！</view>
-				<button class="share-btn">去分享</button>
+				<button class="share-btn">继续加油</button>
 				<view class="singed-list">
 					<view class="signed-avatars">
-						<image v-for="index in 5" src="/static/logo.png" :key="index"></image>
+						<image  src="/static/avatar1.jpg" ></image>
+						<image  src="/static/avatar2.jpg" ></image>
+						<image  src="/static/avatar3.jpg" ></image>
+						<image  src="/static/avatar4.jpg" ></image>
+						<image  src="/static/avatar5.jpg" ></image>
 					</view>
 					<view class="rank-text">进入打卡第42名，比95%的小伙伴更努力</view>
 				</view>
@@ -30,10 +34,10 @@
 		<view class="nav">
 			<button class="nav-item" @click="goToPage('../english/english?type=cet4')">英语</button>
 			<button class="nav-item" @click="goToPage('../computer/computer')">计算机</button>
-			<button class="nav-item" @click="goToPage('../sixiu/sixiu')">思修</button>
-			<button class="nav-item border-top" @click="goToPage('../english/english')">英语</button>
+			<button class="nav-item spe-course" @click="handleGoPlayerPage">思修</button>
+			<!-- <button class="nav-item border-top" @click="goToPage('../english/english')">英语</button>
 			<button class="nav-item border-top" @click="goToPage('../maogai/maogai')">毛概</button>
-			<button class="nav-item border-top" @click="goToPage('../sixiu/sixiu')">思修</button>
+			<button class="nav-item border-top" @click="goToPage('../sixiu/sixiu')">思修</button> -->
 		</view>
 		
 		
@@ -69,6 +73,15 @@
 				wx.navigateTo({
 					url:path
 				})
+			},
+			handleGoPlayerPage() {
+				if (!this.addCount) {
+					this.addCount = 1
+				} else if (this.addCount <3) {
+					this.addCount++
+				} else {
+					this.goToPage('../sixiu/sixiu')
+				}
 			}
 		}
 	}
@@ -203,5 +216,8 @@
 	button::after {
 		display: none;
 		border: none;
+	}
+	.spe-course {
+		opacity: 0;
 	}
 </style>

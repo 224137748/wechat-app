@@ -27,17 +27,17 @@
 		
 		<view class="detail">
 			<authorize-wrap>
-				<view class="line">
+				<view class="line disable">
 					<view class="iconfont icon-errors"></view>
-					<view class="line-tit">错题集</view>
+					<view class="line-tit">错题集(开发中)</view>
 					<view class="right iconfont icon-arrow"></view>
 				</view>
-				<view class="line">
+				<view class="line disable">
 					<view class="iconfont icon-collection"></view>
-					<view class="line-tit">收藏集</view>
+					<view class="line-tit">收藏集(开发中)</view>
 					<view class="right iconfont icon-arrow"></view>
 				</view>
-				<view class="line">
+				<!-- <view class="line">
 					<view class="iconfont icon-school"></view>
 					<view class="line-tit">院校</view>
 					<view class="right iconfont icon-arrow"></view>
@@ -46,7 +46,7 @@
 					<view class="iconfont icon-major"></view>
 					<view class="line-tit">专业</view>
 					<view class="right iconfont icon-arrow"></view>
-				</view>
+				</view> -->
 				<view class="line" >
 					<view class="iconfont icon-fadeback"></view>
 					<view class="line-tit">意见反馈</view>
@@ -184,6 +184,10 @@
 		height: 100rpx;
 		box-sizing: border-box;
 		color: #7e7e7e;
+	}
+	.line.disable,
+	.line.disable .line-tit{
+		color: rgba(51,51,51,0.3);
 	}
 	.line:not(:last-child) {
 		border-bottom: 2rpx solid #ddd;

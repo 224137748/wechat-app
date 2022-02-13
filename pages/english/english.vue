@@ -50,10 +50,10 @@ export default {
 		return {
 			typeArray: [
 				{id: 'cet4', title: '四级'},
-				{id: 'type2', title: '六级'},
-				{id: 'type3', title: '雅思'},
-				{id: 'type4', title: '托福'},
-				{id: 'type5', title: '八级'},
+				// {id: 'cet6', title: '六级'},
+				// {id: 'type3', title: '雅思'},
+				// {id: 'type4', title: '托福'},
+				// {id: 'type5', title: '八级'},
 			],
 			currentType: '',
 			scrollTop:0,
