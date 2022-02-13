@@ -1,5 +1,5 @@
-export const CLOUD_ENV = 'dev-7guaxwhaeba52343'
-
+export const CLOUD_ENV =  process.env.NODE_ENV === 'development' ? 'dev-2g6vkydrb65a226e' : 'production-5gd7i4axa391e6eb'
+// export const CLOUD_ENV =  process.env.NODE_ENV === 'development' ? 'production-5gd7i4axa391e6eb' : 'dev-2g6vkydrb65a226e'
 export const playMode = {
 	sequence: 0,
 	loop: 1,

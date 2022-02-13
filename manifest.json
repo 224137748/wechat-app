@@ -50,10 +50,11 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wx4cc569313027e537",
+        "appid" : "wxc2479fca3c41b6c7",
         "cloudfunctionRoot" : "cloudfunctions/",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "es6" : true
         },
         "usingComponents" : true,
         "requiredBackgroundModes" : [ "audio" ]
