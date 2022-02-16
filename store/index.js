@@ -4,7 +4,7 @@ import * as actions from './actions.js'
 import * as getters from './getters.js'
 import state from './state.js'
 import mutations from './mutations.js'
-import creatLogger from 'vuex/dist/logger'
+import creatLogger from '../node_modules/vuex/dist/logger.js'
 import answer from './modules/answer.js'
 
 Vue.use(Vuex)
